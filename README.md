@@ -2,10 +2,10 @@
 
 Sept 29, 2020 - Repo Created
 
-## https://pages.github.ibm.com/dallas-gsc-gov/dronelab2/
+## https://gscgov.github.io/dronelab2-legacy/
 
 format (for usage): 
-https://pages.github.ibm.com/dallas-gsc-gov/dronelab2/?v=LABNAMEHERER&sg_number=SGNUMBERHERE
+hthttps://gscgov.github.io/dronelab2-legacy/?v=LABNAMEHERER&sg_number=SGNUMBERHERE
 
 
 
