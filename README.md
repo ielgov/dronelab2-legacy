@@ -5,7 +5,7 @@ Sept 29, 2020 - Repo Created
 ## https://gscgov.github.io/dronelab2-legacy/
 
 format (for usage): 
-hthttps://gscgov.github.io/dronelab2-legacy/?v=LABNAMEHERER&sg_number=SGNUMBERHERE
+https://gscgov.github.io/dronelab2-legacy/?v=LABNAMEHERER&sg_number=SGNUMBERHERE
 
 
 
