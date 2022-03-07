@@ -1,0 +1,2923 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>GSC Drone Lab 2 - Instructions</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&family=IBM+Plex+Sans+Condensed:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&family=IBM+Plex+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <a id="top"></a>
+    <div id="navbar">
+        <span class="start" onClick="toggleOptions()">GSC Drone Lab 2</span>
+        <span id="nb" class="item" onClick="moveTo('begin')" style="background-color: #5B27AA;">Begin Lab</span>
+        <span id="np" class="item" onClick="moveTo('prelim')">Preliminary Steps</span>
+        <span id="n1" class="item" onClick="moveTo('s1')">Step 1</span>
+        <span id="n2" class="item" onClick="moveTo('s2')">Step 2</span>
+        <span id="n3" class="item" onClick="moveTo('s3')">Step 3</span>
+        <span id="n4" class="item" onClick="moveTo('s4')">Step 4</span>
+        <span id="ns" class="item" onClick="moveTo('sum')">Summary</span>
+        <a href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank">
+            <span class="out item"> <img src="./img/slack.png" /> Lab Slack channel - post questions & more ⇒</span>
+        </a>
+    </div>
+    <!--<div id="optionsMenu"><span class="opt" id="highlightedUpdates2" onClick="updates2()">[Highlight 7/14/2020 Updates]</span> <span class="opt" id="highlightedUpdates" onClick="updates()">[6/30/2020]</span> <span id="keepTop" onClick="keepTop()">Keep at top</span></div>-->
+    <div id="full">
+        <!--- Begin Lab -->
+        <div id="beginlab" class="main" style="display:block;">
+            <div class="block">
+                <div class="leftHalf">
+                    <h1>GSC Drone Lab 2: Introduction</h1>
+                    <span class="userNote">&#9734 For this lab, a lab user name and Secure Gateway number was created for you. This name was set to <span class="labnameHere">YourLabName</span> and this number was set to <span class="sg_numberHere">unassigned</span>. This information will be addressed and referenced later in the lab.</span>
+
+                    <p>
+                        <b>Welcome back!</b> This lab is the <b>second</b> in a series of labs designed to demonstrate how several IBM technologies, such as OpenShift (Kubernetes), Hybrid Multicloud, and some of the key capabilities available with Cloud Pak for Integration (Secure Gateway, API Connect, App Connect) can be utilized along with modern industry devices, such as <span class="darkblue">drones</span> and <span class="darkblue">sensors</span>, in various industry-specific applications.
+                    </p>
+
+                    <p>
+                        In the previous lab, you deployed a customized, containerized application onto OpenShift. <span class="orange">If you have not completed the previous lab, please return to the SBaaS Catalog (<a href="http://ibm.biz/sbaas-app" target="_blank">http://ibm.biz/sbaas-app</a>) and request access to Remote Drone Console Application Hands-on Lab #1.</span>
+                    </p>
+
+                    <p>
+                        If it has been a significant amount of time since you have completed, it is <b>recommended</b> that you review the guide for Drone Lab 1, located here: <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>. Additionally, feel free to use the Drone Lab 1 guide <b>anytime</b> for your reference.</p>
+
+                    <p>
+                        Please confirm below that you have completed the previous lab and are ready to start this lab.
+                    </p>
+
+                    <p id="lab1Confirm">
+                        <input type="checkbox" id="lab1Complete" onclick="lab1Completed()"> I have completed Drone Lab 1 and am ready to begin this lab, Drone Lab 2.</p>
+
+                    <p id="lab1Confirmation" style="display:none">Thank you for completing Drone Lab 1! You may continue on with this lab.</p>
+
+                    <p>The diagram on the right depicts a high-level flow and services used in this lab.</p>
+                </div>
+                <div class="rightHalf">
+                    <div class="tableofcontents">
+                        <span class="magenta">Table of Contents</span>
+                        <br>
+                        <br>
+                        Before you begin <br>
+                        1. Enable access to a service with Secure Gateway <br>
+                        2. Use API Connect to manage and expose a service’s APIs <br>
+                        3. Connect to another service with App Connect <br>
+                        4. Explore Remote Operations Console with new flows <br>
+                        Summary & Contacts
+                    </div>
+                    <img class="sideImage" src="./img/prodflow.png" />
+                    <br>
+                    <a href="./img/prodflow.png" target="_blank">View full size diagram</a>
+                </div>
+            </div>
+            <div class="block">
+                <h2> Lab Overview </h2>
+            </div>
+            <div class="block">
+                <div>
+                    <div class="leftHalf">
+                        <img src="./img/labOverview2.png" class="bigImage" />
+                    </div>
+                    <div class="rightHalf">
+                        <p>The purpose of this lab is to enable connection from the Remote Operations Console you customized and deployed in Lab 1, to an on-prem private cloud service – provided by a fictional company, "GSC Drones-To-Go". This service was created to allow a user to interact with drones located at the IBM GSC (Global Solution Center) in Coppell, TX. In order for this connection to be enabled securely and deliver the necessary functionality, you will need to <b>setup a few IBM Cloud service configurations</b>.</p>
+
+                        <table class="impTable">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Use <b>Secure Gateway</b> to <span class="magenta">allow access</span> to the drone controller service, which is located on a private back-end OCP (OpenShift Container Platform) cluster at the Global Solution Center (GSC) in Dallas, TX. In this lab, we’ll refer to this private drone service as “GSC Drones-To-Go”.
+                                    </td>
+                                    <td>
+                                        Use <b>API Connect</b> to <span class="magenta">expose APIs</span> (for example, <span class="tblue">getLatLng</span>, or, <i><span class="tblue">show me the latitude and longitude coordinates of the drone</span></i>) so that you are able to communicate with the GSC Drones-To-Go service securely and efficiently.
+                                    </td>
+                                    <td>
+                                        Use <b>App Connect</b> to <span class="magenta">connect to another service</ that provides geospatial tools for nearby available sensors based on information provided via APIs. </td> </tr> </tbody> </table> <div class="block">
+                                            <b>Something to consider</b>: How is your Remote Operations Console, a public SBaaS Cloud Application, able to connect to a “private cloud” resource, like a drone controller/viewer service?
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="block">
+
+            <h2>Lab Environment Setup</h2>
+
+            <p>When you made a request to take this hands-on lab, there were some background tasks that were performed on your behalf in order to prepare the lab environment, which are described below. Don't worry if you have some questions about these concepts... you will get a lot more explanation and hands-on experience as you move through lab steps.</p>
+
+            <img src="./img/prodFlow_explanation.png" width="100%" />
+
+            <p>
+                <b>Created Two Lab Environment Flows </b><br>
+
+                As depicted above, a Production Flow was created to support new functionality that illustrates Hybrid Cloud integration between the Remote Drone Console application and the GSC private Cloud. An additional Lab Flow was created to facilitate the hands-on activities with IBM’s most common integration services in a Hybrid Multicloud context, which each user will encounter in Lab Steps 1-3.
+            </p>
+
+            <p>
+                <b>Created Drone Controller services in GSC Private Cloud </b><br>
+                
+                The drone controller application is an integral part of this lab – it interacts with physical and virtual resources at the GSC (Global Solution Center in Coppell, TX) and its private cloud, along with providing API endpoints that can orchestrate the appropriate functionality. This application, along with a drone activity database, was deployed within the GSC private cloud OpenShift Cloud Platform (OCP), which is used for the lab’s Production Flow.
+            </p>
+
+            <p>
+                <b>Provisioned a second OCP cluster in the IBM Cloud SBaaS environment</b><br>
+
+                The initial IBM Cloud SBaaS organization OCP cluster where the Remote Drone Console application was deployed from Lab 1 acts as the public cloud, while a new OCP cluster that will be in focus during this lab in Steps 1-3 acts as a simulated private cloud. Even though this additional cluster is still in the IBM Cloud SBaaS environment, it was created to enable each lab taker to have visibility into the application artifacts and configurations that were deployed so that they can perform hands-on activities.
+            </p>
+
+            <p>
+                <b>Provisioned Cloud services* </b><br>
+
+                Several IBM Cloud services were prepared and provisioned for lab users within the IBM Cloud SBaaS organization, including Secure Gateway, API Connect, App Connect, and IBM Cloudant.
+            </p>
+
+            <p>
+                <b>Deployed a Secure Gateway Client in both target Environments</b><br>
+
+                To achieve the necessary Secure Gateway service configuration, a Secure Gateway Client was deployed within a project in the second IBM Cloud SBaaS cluster to facilitate hands-on exploration that will be used in Lab Steps 1-3. In addition, a Secure Gateway Client was also deployed within the GSC private cloud environment to enable the IBM Cloud SBaaS Remote Drone Console application functionality that will be leveraged as part of the lab’s Production Flow. In each case, preliminary configuration was performed to establish connection between the Secure Gateway Client in each Flow’s environment and the Secure Gateway Service running at the IBM Cloud SBaaS organization level.
+            </p>
+
+            <p>
+                <b>Deployed a project and artifacts for each lab user in the IBM Cloud SBaaS  </b><br>
+
+                A project with a simplified Drone Controller application and a stubbed version of the drone database was deployed for each lab user within the second IBM Cloud SBaaS OCP cluster. In addition, YAML files were provided to allow each user to walk through the setup of API Connect and App Connect services.
+            </p>
+
+
+
+            <div class="question">
+                💡 * Why didn’t I see Cloud Pak for Integration in these lab steps? <span class="readmore">[Click to Read More]</span>
+            </div>
+            <div class="answer">
+                <p>
+                    IBM Cloud Pak for Integration would be the obvious choice to implement the functionality discussed in this lab in a production environment, where drone resources/data that the operators of the Remote Drone Console need to access resides across Hybrid Multi cloud environments— both public and private. That said, for the purposes of this lab, we chose the on-demand IBM cloud services for the following reasons:<br><br>
+                    1. To avoid upfront capital expenses and to have predictable ongoing operating expenses.<br>
+                    2. To avoid the additional administrative interfaces in Cloud Pak for Integration that would have been introduced before getting to the integration services that were of specific focus for this lab.<br>
+                    3. To more easily manage the pricing plan and user administration for the specific required resources (Secure Gateway, API Connect, App Connect, Cloudant, etc.) that were available through IBM public cloud services in a context that the users were already familiar with.<br><br>
+                    In short, using the IBM Public cloud services gave us the ability to provision and administer resources on-demand and only pay for what was needed, while still allowing the lab user to learn about three of Cloud Pak for Integration's powerful capabilities.</p>
+            </div>
+
+
+        </div>
+        <div class="nextStepBar" onClick="moveTo('prelim')">
+            Move on to the Preliminary Steps →
+        </div>
+    </div>
+    <!--- Preliminary Steps -->
+    <div id="prelim" class="main">
+        <div class="block">
+            <div class="leftHalf">
+                <div class="slackInfo">
+                    <h2>
+                        <a name="slack">Slack Communication</a>
+                    </h2>
+
+                    <p>
+                        Communication (such as feedback, questions, comments, and help) is done through a Slack channel dedicated to this lab. Before you begin the lab, it is encouraged that you confirm you have access to the channel
+                        <span class="purple">#2020gsc_ibmcloudsandbox_dronelab2</span>, located in the <b>IBM Sales</b> workspace (you may need to enter <b><span class="tblue">ibm-sales</span></b>.slack.com first).
+                    </p>
+                    <p>
+                        Go to
+                        <span class="blue">
+                            <a href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank">
+                                https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y
+                            </a>
+                        </span>
+                        to verify you have access to this channel.
+                    </p>
+                </div>
+            </div>
+            <div class="qHalf">
+                <div class="question">
+                    👈 When I click that link, I do not see a Slack channel.
+                    <span class="readmore">[Click to Read Solution]</span>
+                </div>
+                <div class="answer">
+                    You will encounter issues if you do not have access to the
+                    <b>IBM Sales workspace</b>. <br><br>
+
+                    Go to <a href="https://ibm-sales.slack.com" target="_blank">https://ibm-sales.slack.com</a> - if you do not see a Slack channel at all, you may need to go
+                    <a href="https://ibm.enterprise.slack.com/signin/find-workspaces" target="_blank">https://ibm.enterprise.slack.com/signin/find-workspaces</a> and search for <b>“IBM Sales”</b>. This workspace has over 34,000 members and has a
+                    handshake icon with a blue background. Join this workspace and you will be granted access.
+                    <b>You may need to scroll down several times to find it.</b>
+                    <br><br>
+                    Once you click to join the IBM Sales workspace, try visiting <a href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank">https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y</a> again.
+                </div>
+            </div>
+        </div>
+
+        <div class="block">
+            <h2> Preliminary Steps </h2>
+            <div class="leftHalf">
+                <div class="goldInfo">
+                    You will open <b>several tabs</b> throughout the course of this lab. To avoid confusion, it is recommended that this instruction site is viewed via a browser <b>window with no other tabs open</b> before you begin.
+                </div>
+
+                <p>
+                    It is strongly recommended you use <b>Google Chrome</b> or <b>Mozilla Firefox</b> as your browser for this lab. Browsers such as Safari have been known to encounter errors with some of the IBM Cloud services.
+                </p>
+
+                <p>
+                    The screenshots shown in this lab were recorded in a full screen width/height browser. Some IBM Cloud services <b>perform best in full screen resolution</b>.
+                    </p>
+
+                <p>
+                    To avoid issues as you navigate through the lab steps, it is ideal to use the buttons and tabs within the instructions (as opposed to using your browser's "back" and "forward" options).
+                </p>
+
+
+                <p>
+                    <b>After you requested this lab through the SBaaS, you should have received an email </b> <i>(“Thank you for your interest in the IBM Sandbox as a Service Hands—on Lab 2...”)</i> containing the <b>link to this instructions page.</b>
+                </p>
+
+                <p>
+                    <b>Note</b>:
+                    <span class="inote">
+                        If you start this lab without completing Drone Lab 1 first, or without being assigned a lab name or Secure Gateway number, you will encounter errors and be unable to complete this lab successfully.
+                    </span>
+                </p>
+
+                <p>
+                    <span class="green">The instructions here will guide you through the lab step by step.</span>
+                </p>
+            </div>
+
+            <div class="rightHalf">
+                <p>This instructions page that you have been provided should contain your lab name and your assigned Secure Gateway number.</p>
+
+                <div class="impInfo">
+                    <p><b>Your Lab Name</b>: <span class="labnameHere">YourLabName</span></p>
+                    <p><b>Your Secure Gateway number</b>: <span class="sg_numberHere">unassigned</span></p>
+                </div><br>
+                <div class="subImpInfo">
+                    Referencing the above, if your Lab Name is <b>"YourLabName"</b> and/or your Secure Gateway number is <b>"unassigned"</b>, please use the <b>Slack channel</b> link located in the <b>top right corner</b> of this page and post <b>"I was not assigned a lab name/Secure Gateway number for Drone Lab 2."</b>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="timeline">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="step next">
+                            <div class="title">Step 1 <b>Next</b></div><br>
+                            ☑ Access IBM Cloud <br>
+                            ☑ Access RedHat OpenShift cluster <br>
+                            ☑ Open RedHat OpenShift web console <br>
+                            ☑ Setting up the Access Control List (ACL) <br>
+                            ☑ Adding a Secure Gateway destination <br>
+                        </td>
+                        <td class="arrow">→</td>
+                        <td class="step">
+                            <div class="title">Step 2</div><br>
+                            ☑ Add a catalog<br>
+                            ☑ Work with OpenAPI definitions <br>
+                            ☑ Edit and publish API product <br>
+                            ☑ Explore and test API <br>
+                        </td>
+                        <td class="arrow">→</td>
+                        <td class="step">
+                            <div class="title">Step 3</div><br>
+                            ☑ Explore sensor database <br>
+                            ☑ Set up App Connect flow <br>
+                            ☑ Start the API <br>
+                            ☑ Try out the flow <br>
+                        </td>
+                        <td class="arrow">→</td>
+                        <td class="step">
+                            <div class="title">Step 4</div><br>
+                            ☑ Recap previous steps<br>
+                            ☑ View configurations made for this lab<br>
+                            ☑ Explore the drone viewer modal<br>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="nextStepBar" onClick="moveTo('s1')">
+            Ready? Move on to Step 1 and start the lab →
+        </div>
+
+    </div>
+    <!--- Begin Step 1 -->
+    <div id="step1" class="main">
+        <div id="menu">
+            <a href="#step1" class="start">Step 1</a>
+            <a href="#1_1">1.1 Access IBM Cloud</a>
+            <a href="#1_2">1.2 Access RedHat OpenShift cluster</a>
+            <a href="#1_3">1.3 Open RedHat OpenShift web console</a>
+            <a href="#1_4">1.4 Setting up the Access Control List (ACL)</a>
+            <a href="#1_5">1.5 Adding a Secure Gateway destination</a>
+            <a href="#finishStep1" class="end">Finish Step 1</a>
+        </div>
+        <div id="content">
+            <div id="main">
+
+                <div id="sec_step1">
+                    <h1>
+                        <a name="step1">1. Enable access to a service with Secure Gateway</a>
+                    </h1>
+                    <p>
+                        In this step, the first few instructions may seem familiar – you should be comfortable with navigating to and within an OpenShift web console in the IBM SBaaS organization cluster based on your completion of the first Drone lab. As a reminder, you can always reference the first lab’s instructions guide here <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>. In this lab, you will focus on a different cluster: one that emulates a real-life organization that has its own private service.</p>
+
+                    <p>
+                        The purpose of this setup was to demonstrate the technology and value behind connecting various applications and services between different clusters, even if they are public or private. In a typical case, an application may want to access services that are located in a private cloud. With the inherit nature of private cloud, it may seem problematic to introduce communication with any public cloud application. </p>
+
+
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td width="30%">
+                                    <p>Let’s take a moment to review some concepts you will be delving into in the next few steps. Consider two parties involved: </p>
+
+                                    <p>1. the SBaaS Operators that use the Remote Drone Operations Console application, and,</p>
+
+                                    <p>2. an organization, “GSC Drones-To-Go”, which has private on-prem resource in Coppell, TX that allows piloting and observing of local drones.</p>
+
+                                </td>
+                                <td width="70%" style="text-align: center">
+                                    <img src="./img/1_overview.png" width="100%">
+                                    <br>
+                                    <a href="./img/1_overview.png" target="_blank">View full size diagram</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>GSC Drones-To-Go wants users like the SBaaS Operators to access their drone service, wants to easily manage their access, and wants to make sure this connection is done securely so they aren’t compromised in any way.</p>
+
+                    <p>The SBaaS Operators, owners and users of the Remote Drone Operations Console, want to connect the service that GSC Drones-To-Go provides. </p>
+
+                    <p>You will explore how IBM® Secure Gateway can help enable the connection between the Public Safety Situational Awareness Operator users in one cloud environment and the GSC Drones-To-Go services that are  running in another cloud environment. By deploying the lightweight and natively installed Secure Gateway Client, a secure, persistent connection can be established between your environment and the cloud. You can imagine the Secure Gateway Client is like an on-prem bouncer, checking who wants access based on their list. </p>
+
+                    <p>Secure Gateway allows the safe connection of applications and resources regardless of their location. This is important - rather than bridging your environments at the network level like a traditional VPN, Secure Gateway provides granular resource control operating with the principle of least privilege as its core tenet.</p>
+
+                    <p>In this step of the lab, you learn about how to use Secure Gateway to bridge connection between the Remote Drone Operations Console and the on-prem resource at GSC Drones-To-Go. In later steps, you will continue to get more access to the GSC Drone-To-Go service, including accessing APIs and even invoking related flows. </p>
+
+                    <img src="./img/flow_1.png" class="standardImage" />
+
+
+
+                    <p>Reference:</p>
+                    <div class="whole">
+                        <div class="ref instructionRect">
+                            <div class="in">
+                                <span class="title">Instruction/Step</span>
+                                <br>
+                                <span class="UPDATE">Indicated as</span> text with light blue background.
+                                <br>
+                                <br>
+                                <i>Example:</i>
+                                <br>
+                                <div class="step">Scroll down after you make your changes</div>
+                            </div>
+                        </div>
+                        <div class="ref reminderRect">
+                            <div class="in UPDATE">
+                                <span class="remindertitle">Reminder</span>
+                                <br>
+                                It's important to read each step carefully and in order. <br> <br>
+                                Skipping sections, reading too fast, or not clicking to read <br>
+                                <div class="ex_question">💡 <b>More Information</b> lightbulb blocks</div>
+                                <br> may result in incomplete learning.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="whole">
+                        <div class="rect blueRect">
+                            <div class="in">
+                                Technologies Used
+                                <br>
+                                <img src="./img/cloud.png" /><br>
+                                <img src="./img/openshift.png" /><br>
+                                <img src="./img/securegateway.png" />
+                            </div>
+                        </div>
+
+                        <div class="rect magentaRect">
+                            <div class="in">
+                                Your Tasks for Step 1 <br><br>
+                                <div class="list">
+                                    ✅ Access IBM Cloud <br>
+                                    ✅ Access RedHat OpenShift cluster <br>
+                                    ✅ Open RedHat OpenShift web console <br>
+                                    ✅ Setting up the Access Control List (ACL) <br>
+                                    ✅ Adding a Secure Gateway destination <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="timeline">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="step inprogress">
+                                        <div class="title">Step 1 <b>In Progress</b></div><br>
+                                        ☑ Access IBM Cloud <br>
+                                        ☑ Access RedHat OpenShift cluster <br>
+                                        ☑ Open RedHat OpenShift web console <br>
+                                        ☑ Setting up the Access Control List (ACL) <br>
+                                        ☑ Adding a Secure Gateway destination <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step">
+                                        <div class="title">Step 2</div><br>
+                                        ☑ Add a catalog<br>
+                                        ☑ Work with OpenAPI definitions <br>
+                                        ☑ Edit and publish API product <br>
+                                        ☑ Explore and test API <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step">
+                                        <div class="title">Step 3</div><br>
+                                        ☑ Explore sensor database <br>
+                                        ☑ Set up App Connect flow <br>
+                                        ☑ Start the API <br>
+                                        ☑ Try out the flow <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step">
+                                        <div class="title">Step 4</div><br>
+                                        ☑ Recap previous steps<br>
+                                        ☑ View configurations made for this lab<br>
+                                        ☑ Explore the drone viewer modal<br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+
+                <!-- 1.1 -->
+                <div id="sec_1_1">
+                    <h2>
+                        <a name="1_1">1.1 Access IBM Cloud</a>
+                    </h2>
+
+                    <div class="sectionTitle">1.1.1</div>
+                    <p>
+                        Just like in the first lab, you’ll need to access RedHat OpenShift through the IBM Cloud in order to build and deploy your application. Begin by signing into IBM Cloud. ( New Tab ⇒ <a href="https://cloud.ibm.com" target="_blank">https://cloud.ibm.com</a> ) (Single Sign-On Required with w3id)
+                    </p>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Once you’ve logged in, you should be greeted with a dashboard that displays the various resources that IBM Cloud has to offer. From Cognitive APIs to DevOps to Classic Infrastructure resources, IBM Cloud has many offerings to explore. </p>
+
+                                    <p>At the top of the dashboard, you’ll see a navigation bar. On the right side of the navigation bar, there is a dropdown for various accounts you may be a part of. Most likely, the default is the last account you opened, if not the only one available.</p>
+
+                                    <p>For this lab, you’ll be working in the 1500867 – IBM account. </p>
+
+                                    <div class="step">
+                                        Click on the 1500867 – IBM account in the IBM Cloud’s navigation bar dropdown.
+                                    </div>
+                                </td>
+                                <td>
+                                    <img class="rightFloat" src="./img/1_1_1.png">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 1.2 -->
+                <div id="sec_1_2">
+                    <h2>
+                        <a name="1_2">1.2 Access RedHat OpenShift cluster </a>
+                    </h2>
+                    <div class="sectionTitle">1.2.1</div>
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Once you click on 1500867 - IBM, your dashboard will update with Resources that are specific to it. You should see a Resource summary card that currently contains a Resource: Clusters.</p>
+                                    <div class="step">Click on View all in the Resource summary card.</div>
+                                </td>
+                                <td>
+                                    <img class="rightFloat" src="./img/1_2_1.png">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="sectionTitle">1.2.2</div>
+
+                    <p>You may recall that in Drone Lab 1, you accessed the mycluster-dal12-b3c.4x16 cluster, using it to deploy your remote drone operations console onto the public cloud. For the purposes of this lab, this mycluster-dal12-b3c.4x16 cluster will be referred to as “Cluster A”. </p>
+
+                    <p>For most of this lab, you will be working with the <b>droneLabs</b> cluster, which may sometimes be referred to as “Cluster B” or “Lab 2 Cluster” throughout these instructions.</p>
+
+                    <p>You will notice that there are several other resources located in this list. Grouped in the Cloud Foundry services, you will see resources like DroneLab_Secure Gateway-jv, DroneLab_API Connect-52, and DroneLab_App Connect-68. These will be utilized in later steps throughout this lab.</p>
+
+                    <div class="step">
+                        Click on <b>Clusters</b> grouping, and then the <b>droneLabs</b> cluster.
+                    </div>
+                    <br><br>
+
+                    <img class="standardImage" src="./img/1_2_2.png">
+
+                    <p>Cluster B will be used in this lab to demonstrate how services and applications located in a public cloud can communicate with services and applications in a private cloud. For this lab, imagine that Cluster B is private, and you want your application to have the ability to communicate with services located in this separate Cluster B. You will see in later steps why this is, based on the services located in this cluster.
+                    </p>
+
+                    <div class="question">
+                        💡 What is the difference between public and private cloud? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>The definitions of public and private cloud are constantly evolving. It used to be defined by location and ownership, but keep in mind that as technologies become more complex, the definitions need to match. Below are some loose definitions to help with understanding the differences between them.</p>
+                        Public cloud - created from resources not owned by the end user that can be redistributed to other tenants.<br>Private cloud - solely dedicated to the end user, usually within the user’s firewall and sometimes on premise.</p>
+                    </div>
+
+
+
+
+
+
+                </div>
+
+                <!-- 1.3 -->
+                <div id="sec_1_3">
+                    <h2>
+                        <a name="1_3">1.3 Open RedHat OpenShift web console</a>
+                    </h2>
+                    <div class="sectionTitle">1.3.1</div>
+                    <p>Let’s examine this cluster’s (droneLabs) overview of the resource.</p>
+
+                    <p>You will remember from Drone Lab 1 that on the left side is the additional settings menu. In the middle is the summary card for the cluster. On the right side, you’ll see worker nodes/cluster insights. It includes diagnostics and status information about the cluster. All of this provides a summary of the OpenShift instance before you jump in and work directly inside of it. </p>
+
+                    <img class="standardImage" src="./img/1_3_1_A.png" /> <br><br>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <div class="step">Click on the OpenShift web console button in the top right to access the console.
+                                        </div>
+                                    </p>
+                                </td>
+                                <td>
+                                    <img class="rightFloat" src="./img/1_3_1_B.png">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>When you click this button, you may be prompted with an alert saying you need to enable pop-ups. If you get that prompt, enable pop-ups for this site click the OpenShift web console button a second time and wait for the new page to open. </p>
+
+                    <div class="problem question">
+                        ⚠️ How do I enable pop-ups? <span class="readmore">[Click to Troubleshoot]</span>
+                    </div>
+                    <div class="answer">
+                        Generally speaking, in the address bar, you may see an alert saying, "Pop-up blocked". Click the link for the pop-up you want to see. To always see pop-ups for the site, select Always allow pop-ups and then Done.<br><br>
+
+
+                        <b>Windows Operating System</b> <br>
+                        Firefox: <br>
+                        <a href="https://support.mozilla.org/en-US/kb/pop-blocker-settings-exceptions-troubleshooting" target="_blank">https://support.mozilla.org/en-US/kb/pop-blocker-settings-exceptions-troubleshooting</a> <br> <br>
+                        Google Chrome: <br>
+                        <a href="https://support.google.com/chrome/answer/95472?co=GENIE.Platform%3DDesktop&hl=en" target="_blank">https://support.google.com/chrome/answer/95472?co=GENIE.Platform%3DDesktop&hl=en</a> <br> <br> <br>
+
+                        <b>Mac Operating System</b> <br>
+                        Safari: <br>
+                        <a href="https://www.technipages.com/safari-popup-blocker" target="_blank">https://www.technipages.com/safari-popup-blocker</a> <br> <br>
+                        Firefox: <br>
+                        <a href="https://support.mozilla.org/en-US/kb/pop-blocker-settings-exceptions-troubleshooting" target="_blank">https://support.mozilla.org/en-US/kb/pop-blocker-settings-exceptions-troubleshooting</a> <br> <br>
+                        Google Chrome: <br>
+                        <a href="https://support.google.com/chrome/answer/95472?co=GENIE.Platform%3DDesktop&hl=en" target="_blank">https://support.google.com/chrome/answer/95472?co=GENIE.Platform%3DDesktop&hl=en</a> <br> <br>
+                    </div>
+
+                    <p>It may take several seconds for this new tab to load completely. The reason for this is that you have moved into a RedHat OpenShift instance. Here you can see which projects and applications are deployed on your cluster. </p>
+
+                    <div class="important" style="text-align: left">
+                        Before we get too far, let’s make sure you are in the Developer Perspective for the Project space allocated for this lab: <br> <br>
+                        1) Set your perspective in the left menu by clicking the dropdown and selecting <b>&lt;/&gt; Developer</b> (instead of <i>Administrator</i>).<br><br>
+                        2) Click the dropdown where it says <b>Project</b> (at the top) and make sure "<span class="labnameHere">YourLabName</span>-2020-lab-2" is selected.<br><br>
+                        3) Click <b>Topology</b> on the left menu.</div>
+
+                    <div class="problem question">
+                        ⚠️ My page looks <b>different</b>! / I see an <b>error</b> on the page below! <span class="readmore">[Click to Troubleshoot]</span>
+                    </div>
+                    <div class="answer">
+                        <img src="./img/1_3_1_C.png" class="sideImage_left_big" /><br><br>If you see "<b>Restricted Access: You don’t have access to this section due to cluster policy</b>" along with the error details, <i>"deploymentconfigs.apps.openshift.io is forbidden: User “IAM#...” cannot list resource “deploymentconfigs” in API group “apps.openshift.io" in the namespace “default”</i>, make sure to select the <b>developer perspective</b> and that you are in the <b>correct project</b>. Your project should be "<b><span class="labnameHere">YourLabName</span>-2020-lab-2</b>".
+
+                        <p>If you do <b>NOT</b> see a page similar to the one below, post a screenshot of your page in the <b>Slack</b> channel (link in the top right corner) along with the message, <b>"My Topology view in OpenShift doesn't match the screenshot in Step 1.3.1."</b></p>
+
+                    </div>
+
+                    <img class="standardImage" src="./img/1_3_1_C.png" /> <br><br>
+
+                    <p>You should see the drone-controller node already located in the topology. As mentioned earlier, imagine this cluster you’re currently in, Cluster B, is GSC-To-Go’s private cluster, where their own applications and services are located. Your Remote Drone Operations Console application, on the totally separate and public Cluster A, wants to communicate and use these services, but the organization wants to make sure this is done properly and securely. </p>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>You will recall that your Remote Drone Operations Console had a component to “Connect” to some available drones. 
+                                        In the next several steps, you will learn how this connection can be enabled, starting with the use of Secure Gateway.
+                                    </p>
+                                </td>
+                                <td>
+                                    <img class="rightFloat" src="./img/1_3_1_D.png">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+
+                </div>
+
+                <!-- 1.4 -->
+                <div id="sec_1_4">
+                    <h2>
+                        <a name="1_4">1.4 Setting up the Access Control List (ACL)</a>
+                    </h2>
+                    <div class="sectionTitle">1.4.1</div>
+
+                    <p>In the introduction of this step, you read an analogy made regarding the Secure Gateway Client, acting as an on-prem bouncer, checking who wants access based on their list. This list is significant – it’s referred to as the Access Control List (ACL). You can allow or restrict (deny) access to on-premises resources by making modifications to the ACL. This can be done interactively using the client commands or specifying a file that contains the ACLs you want to have in affect.</p>
+                    
+                    <p>ACL enables the Secure Gateway client to access the identified resource (hostname or IP address) in the environment and allows the request from Secure Gateway server. In order to identify the lab drone controller's information, click on the big center icon for the drone-controller node, opening the right side menu.</p>
+
+                    <div class="question">
+                        💡 What exactly is an ACL? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>The Access Control List (ACL) is a not a term specific to IBM Secure Gateway. In fact, in networking, an ACL is one of the most fundamental components of security.</p>
+
+                        <p>An Access Control Lists “ACL” is a function that watches incoming and outgoing traffic and compares it with a set of defined statements. Access Control Lists “ACLs” are network traffic filters that can control incoming or outgoing traffic. ACLs work on a set of rules that define how to forward or block a packet at the router’s interface. An ACL is the same as a Stateless Firewall, which only restricts, blocks, or allows the packets that are flowing from source to destination.</p>
+
+                        <p>When you define an ACL on a routing device for a specific interface, all the traffic flowing through will be compared with the ACL statement which will either block it or allow it. The criteria for defining the ACL rules could be the source, the destination, a specific protocol, or more information. ACLs are common in routers or firewalls, but they can also configure them in any device that runs in the network, from hosts, network devices, servers, etc. </p>
+
+                        <p>Read more about ACLs here: <a href="https://www.ittsystems.com/access-control-list-acl" target="_blank">https://www.ittsystems.com/access-control-list-acl</a> </p>
+                    </div>
+
+                    <div class="step">Click on the big center icon for the drone-controller node (as indicated in the screenshot below) to open the right side menu.</div>
+
+                    <br><br>
+
+                    <img class="standardImage" src="./img/1_4_1.png">
+
+                    <p>This right side menu lists all the details for the drone-controller node. You will notice that the pod is running, builds, services, and routes. For now, let’s take a look at the service resource,  where you can get the drone-controller's route name (hostname) and port#, which has the S icon before it.</p>
+
+                    <div class="step">Click on the drone-controller service, located under Services.</div>
+
+                    <div class="sectionTitle">1.4.2</div>
+
+                    <p>Clicking on the drone-controller services opens a full page view, complete with all of its related service details. Take note of the Service Routing on the right side – you will see the Cluster IP address location, along with Service Port Mapping (8080). To make it easier for lab administration, for the next steps you will use the namespace instead of the Cluster IP address. It should be noted that both will work and enable access accordingly.</p>
+
+                    <div class="question">
+                        💡 What is a namespace? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>A Kubernetes namespace provides a mechanism to scope resources in a cluster. In OpenShift, a project is a Kubernetes namespace with additional annotations.</p>
+
+                        <p>Namespaces provide a unique scope for:<br>
+                            - Named resources to avoid basic naming collisions.<br>
+                            - Delegated management authority to trusted users.<br>
+                            - The ability to limit community resource consumption.</p>
+
+                        <p>Most objects in the system are scoped by namespace, but some are excepted and have no namespace, including nodes and users. Read more about namespaces here: <a href="https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/projects_and_users.html#namespaces" target="_blank">https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/projects_and_users.html#namespaces</a>.</p>
+
+                    </div>
+
+                    <img class="standardImage" src="./img/1_4_2.png">
+
+                    <p>Under Service Overview, notice the Labels section. One label starts with “route-name=”. The route-name is what you will use for the Access Control List. For your convenience, your route name was generated below for easy access.</p>
+
+                    <div class="codeblock">
+                        <div class="text-wrap">
+                            Your route name<br>
+                            <textarea class="routeNameHere" id="text-routename" readonly>drone-controller.YourLabName-2020-lab-2.svc.cluster.local</textarea>
+                            <br>
+                            <div id="copyToClipboard-routename" class="clipboardButton">Copy to clipboard</div>
+                            <div id="notif-routename" class="notif"></div>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="step">Copy the route-name label under Labels in Service Overview (copy text after route-name=) <br/>OR click on the “Copy to clipboard” button above.<br/> Do NOT paste it anywhere just yet!</div>
+
+                    <p>What you copied here will be used more than once in this lab. It will be provided to you again in later steps.</p>
+
+                    <div class="sectionTitle">1.4.3</div>
+
+                    <p>When you were provisioned this lab, you were placed in a project group based on the availability of connected secure gateway client connections and destinations at the time based on the associated pricing plan options. our assigned Secure Gateway group number was provided as part of you customized instructions link, which you can view below.</p>
+
+                    <div class="impInfo">Your Secure Gateway Client group is <span class="sg_numberHere">unassigned</span></div>
+                    <br><br>
+
+                    <div class="step">This Secure Gateway number will be provided again when it is used later.</div>
+
+                    <br><br>
+
+                    <div class="sectionTitle">1.4.4</div>
+
+                    <br><br>
+
+                    <p>The Secure Gateway Client group number you were assigned is important in navigation to the next project will access. Let’s go to it now by leaving the Service Details page and heading back to the Topology view.</p>
+
+                    <div class="step">Click on <b>Topology</b> on the left side menu to leave Service Details.</div>
+
+                    <br><br>
+
+                    <img class="standardImage" src="./img/1_4_4_B.png">
+
+                    <p>Click on the Project dropdown to select the project where your Secure Gateway Client resides. Keep in mind that this will be different for various lab users depending on the group number you were assigned to in Step 1.4.3. In this example, the instructions lab user was assigned to group #1, so the project they chose was secure-gateway-client1. It is critical that you select the secure-gateway-client project that contains the group # you were assigned – otherwise, you will encounter errors. As a reminder, your Secure Gateway number is ___. (If it says you are unassigned, please post in the Slack channel, which you can click in the top right, and say “I do not have a Secure Gateway number assigned”.</p>
+
+                    <div class="step">Click on the Project dropdown and select the secure-gateway-client<span class="sg_numberHere">unassigned</span>.</div>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Make sure you are in the Topology view. Once you’ve selected your matching project, you’ll notice that a node has already been deployed within this Secure Gateway Client project. Once you click on the node’s Open URL button, located in the top right of it, it will open the route endpoint which contains a friendly user interface for updating the ACL.</p>
+                                    <div class="step">Click on the <span class="magenta">Open URL</span> icon (top right corner of the node, see screenshot as reference) to open the endpoint.</div>
+                                </td>
+                                <td>
+                                    <img class="rightFloat" src="./img/1_4_4_C.png">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <br><br><br><br>
+
+                    <div class="sectionTitle">1.4.5</div>
+
+                    <p>What you’ve opened in the previous sub-step was the Secure Gateway Client – the bouncer, so to speak. It contains the ability to View Logs, see Connection Info, and most importantly, have a designated Access Control List. Let’s take a look at this list and add the address you copied in Step 1.4.2.</p>
+
+                    <div class="step">Click on <b>Access Control List</b>.</div>
+
+                    <br><br>
+
+                    <img class="standardImage" src="./img/1_4_5_A.png">
+
+                    <br><br>
+
+                    <div class="question">
+                        💡 What is the top right icon that says "Enabled" mean? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>You may have wondered how the Secure Gateway Client was installed into this project, and furthermore you probably noticed that the Secure Gateway Client already has a connection established.  These preliminary steps were already done on our behalf as part of your lab user setup – if you are interested in seeing how it was done, watch the short video below.</p>
+                        
+                        <video width="100%" controls>
+                            <source src="./vid/SecureGatewayClientInstall.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+
+                        <p>If you're unable to watch the video above, please go to <a href="https://ibm.box.com/s/ojaxqs4f7raue41z2uys7m55nlomd9zh" target="_blank">https://ibm.box.com/s/ojaxqs4f7raue41z2uys7m55nlomd9zh</a>.</p>
+
+                        <p>The service at the organization level generates a gateway ID and security token, which the Secure Gateway Client adds to establish a connection from the service to the cloud or cluster where the client is running.</p>
+
+                        <p>For your reference, the Secure Gateway Client was installed on the cluster as a docker container (or on-prem via Linux or Windows installers).</p>
+                    </div>
+
+                    <p>What you’ve opened in the previous sub-step was the Secure Gateway Client – the bouncer, so to speak. It contains the ability to View Logs, see Connection Info, and most importantly, have a designated Access Control List. Let’s take a look at this list and add the address you copied in Step 1.4.2. </p>
+
+                    <img class="standardImage" src="./img/1_4_5_B.png">
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img class="leftFloat_h" src="./img/1_4_5_C.png">
+
+                                </td>
+                                <td>
+
+
+
+                                    <div class="codeblock">
+                                        <div class="text-wrap">
+                                            Your route name<br>
+                                            <textarea class="routeNameHere" id="text-routename2" readonly>drone-controller.YourLabName-2020-lab-2.svc.cluster.local</textarea>
+                                            <br>
+                                            <div id="copyToClipboard-routename2" class="clipboardButton">Copy to clipboard</div>
+                                            <div id="notif-routename2" class="notif"></div>
+                                        </div>
+                                    </div>
+
+                                    <p>8080 is the port.</p>
+
+                                    <div class="step">Paste your route-name address from Step 1.4.2 into the “Resource Hostname” field under Allow access. Type 8080 into the “Port” field. Then click on the Plus (+) button to add it.</div>
+
+                                    <p>Congratulations! You added your drone-controller route name address to a list of allowed hostnames, which is managed by the Secure Gateway Client. In the next step, you will finally add a destination, which will define how to connect to the resource.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+
+                    <div class="question">
+                        💡 What is the benefit of using an ACL? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>The main idea of using an ACL is to provide security to your network. Without it, any traffic is either allowed to enter or exit, making it more vulnerable to unwanted and dangerous traffic. To improve security with an ACL you can, for example, deny specific routing updates or provide traffic flow control.</p>
+                        
+                        <p>For example, you could have a routing device that has an ACL which is denying access to host A into the one network, and at the same time, it is allowing access to host B in another network, even if there are other hosts in both networks. With an ACL you can filter packets for a single or group of IP addresses or different protocols, such as TCP or UDP. By being picky and controlling access to a very granular level, you can ensure the security of your operations.</p>
+
+                        <p>Read more about ACL benefits here: <a href="https://www.ittsystems.com/access-control-list-acl" target="_blank">https://www.ittsystems.com/access-control-list-acl</a> </p>
+
+                    </div>
+
+
+                    <!-- 1.5 -->
+                    <div id="sec_1_5">
+                        <h2>
+                            <a name="1_5">1.5 Adding a Secure Gateway destination</a>
+                        </h2>
+                        <div class="sectionTitle">1.5.1</div>
+
+                        <p>Within a Secure Gateway, a destination is a definition of how to connect to a specific on-premises or cloud resource. Once the destination has been created, the Secure Gateway servers will provide it with a unique public endpoint where it will listen for connections while the gateway is connected.</p>
+
+                        <p>Let’s get started by navigating away from the Access Control List in Step 1.4. You will want to open a new tab and go to the list of Resources within the 1500867 - IBM account. By expanding the Cloud Foundry Services section, you will find the Secure Gateway instance (DroneLab_Secure Gateway-jv) that already exists. </p>
+
+                        <div class="step">In a new tab, open <a href="https://cloud.ibm.com/resources" target="_blank">https://cloud.ibm.com/resources</a>. Then expand the Cloud Foundry Services section. Click on DroneLab_Secure Gateway-jv.</div>
+
+                        <p>You should see the Secure Gateway Dashboard, which displays the total inbound and outbound traffic along with the option to select gateways that were premade. Based on the group number you were assigned in Step 1.4.3; you will want to select the corresponding gateway that matches your group number.</p>
+
+                        <div class="question">
+                            💡 How were these pre-made gateways created? <span class="readmore">[Click to Read More]</span>
+                        </div>
+                        <div class="answer">
+                            Previously in Step 1.4.5, recall the video under the question <b>"What is the top right icon that says "Enabled" mean?"</b>. That video detailed the step-by-step flow that was necessary for the lab steps to be completed- it must be installed and connected prior to a lab user starting this lab.
+                        </div>
+
+                        <img class="standardImage" src="./img/1_5_1_B.png"><br>
+
+
+                        <div class="step">Click on Lab2Gateway<span class="sg_numberHere">unassigned</span></div><br>
+
+
+
+                        <p>Once you have selected and accessed your assigned gateway, you will be able to add your destination. This destination is a reference to the address you added to the Access Control List in the previous step. From within your assigned gateway and on the Destinations tab, the Add Destination button will open the Add Destination panel. </p>
+
+                        <p>For your information, there are two methods for creating your destination: a guided setup that shows how each piece fits into the overall architecture and an advanced setup that provides all fields and options on a single panel. It should be noted that the guided setup does not allow for the configuration of proxy information, server name indicators, reject unauthorized or the upload of a destination-specific cert/key pair. After creation, all fields are available via the Edit Destination panel. This will be addressed in the later sub-steps.</p>
+
+                        <div class="step">Click on the Plus (+) button to add a destination within your assigned gateway.</div>
+
+                        <img class="standardImage" src="./img/1_5_1_C.png">
+
+                        <div class="sectionTitle">1.5.2</div>
+
+                        <p>
+                            To make it simpler for you, the following series of steps will require the details below:
+                        </p>
+
+                        <p>
+                            <i><b>Note</b>: Some of the dropdowns may be difficult to read, especially if you are not in a full screen view.</i>
+                            </p>
+
+                        <p>To view the steps visually, click through the <b>carousel of images</b> below.</p>
+                        <p>Add Destination:<br>
+                        
+                        Where is your resource located? <b>On-Premises</b> <i>(click Next)</i> <br>
+
+                            What is the host and port of your destination? <b>drone-controller.<span class="labnameHere">YourLabName</span>-2020-lab-2.svc.cluster.local, 8080 </b> <i>(click Next)</i><br>
+
+                            What protocol will the User/Application use to connect to your destination? <b>HTTPS: Server Side</b> <i>(click Next)</i><br>
+                            
+                            What kind of authentication does your destination enforce? <b>Destination-side</b><i>(click Next)</i><br>
+                            If you would like to make your destination private, add IP table rules below: <i>(Change nothing and click Next)</i><br>
+                            What would you like to name this destination? <b><span class="labnameHere">YourLabName</span>-destination</b><i>(Do NOT click next)</i> <br>
+
+                            <b>*** Click on <span class="magenta">Advanced Setup</span> tab at the top. ***</b><br>
+                            
+                            Resource Authentication: <b>TLS</b><br>
+                            
+                            On-Premises Authentication: <b><i>Uncheck</i> Reject unauthorized</b> <br>
+
+                            Then click <span class="magenta">Add destination</span>.
+                        </p>
+
+
+
+                        <div class="carousel">
+                            <div class="carousel_nav">
+                                <button onclick="plusDivs(-1)">❮ Prev</button>
+                                <button onclick="plusDivs(1)">Next ❯</button>
+                            </div>
+                            <button class="numSlide" onclick="currentDiv(1)">1</button>
+                            <button class="numSlide" onclick="currentDiv(2)">2</button>
+                            <button class="numSlide" onclick="currentDiv(3)">3</button>
+                            <button class="numSlide" onclick="currentDiv(4)">4</button>
+                            <button class="numSlide" onclick="currentDiv(5)">5</button>
+                        </div>
+                        <div class="carousel_content" style="max-width:800px">
+                            <img class="mySlides" src="./img/1_5_2_Car_0.png" style="width:100%">
+                            <img class="mySlides" src="./img/1_5_2_Car_1.png" style="width:100%">
+                            <img class="mySlides" src="./img/1_5_2_Car_2.png" style="width:100%">
+                            <img class="mySlides" src="./img/1_5_2_Car_3.png" style="width:100%">
+                            <img class="mySlides" src="./img/1_5_2_Car_4.png" style="width:100%">
+                        </div>
+
+                        <p>You should now notice your new destination being displayed in your assigned gateway. <b>Read below</b> about some of the details regarding this destination setup you just completed.</p>
+
+                        <div class="longText">
+                            <p><b>IBM Secure Gateway - Destinations Explained:</b></p>
+
+                            <p>Secure Gateway enables the communication between client and destination environment. The <b>destination</b> configuration within Secure Gateway helps to identify the resource in the destination environment and defines the communication protocol between the client resource and the destination resource.
+                                <br>
+                                Destinations defined within the Secure Gateway can use HTTP/HTTPS, unencrypted TCP, Transport Layer Security (TLS) server-side, and TLS Mutual Auth. TLS Mutual authentication is an obvious choice for any connections that handle sensitive data transfers, as each side can be sure there is no HTTPS proxy (spyware, or hacker) inspecting the traffic between the server and the client.</p>
+                            <p> To simplify for the purposes of this hands-on drone lab, a containerized drone controller (destination) was deployed within a Red Hat OpenShift cluster (private cloud) and configured to listen to <b>TCP</b> connections without requiring authentication.</p>
+
+                            <p>To facilitate a secure connection, the Secure Gateway will enable communication with the Remote Drone Operations Console application running in another Red Hat OpenShift cluster (public cloud) using the <b>HTTPS:server-side</b> option. By contrast, if <b>HTTP</b> option had been used, it would not guarantee a secure connection.
+
+                                <br>
+                                Furthermore, by using the <b>TLS authentication</b> option between the Secure Gateway and the destination, browser cross-checking measures can be enabled. Since our drone controller was configured without an authentication mechanism, it is appropriate to deselect the option to "Reject unauthorized".</p>
+
+                            <p>For reference, the options below provide a brief explanation of the available protocol options for how your application can initiate connections/requests with Secure Gateway.</p>
+
+                            <p><b>TCP</b><br>
+                                No authentication. Your application can communicate directly with the Secure Gateway servers without requiring any certificates.</p>
+
+                            <p><b>HTTP</b><br>
+                                TCP connection where the host header is rewritten to match the on-premises hostname.</p>
+
+                            <p><b>No TLS</b><br>
+                                No authentication is provided. Your application can communicate directly to the gateway without requiring any certificates.</p>
+
+                            <p><b>TLS: Server Side</b><br>
+                                TLS is enabled and the server provides a certificate to prove its authority. You need to accept the server certificate into your application trust-store.</p>
+
+                            <p><b>TLS: Mutual Auth</b><br>
+                                The server provides a set of certificates. However, you also need to upload your own certificate or select auto-generate to automatically create a self-signed certificate/key pair that you can download along with the server certificate.</p>
+
+                            <p><b>HTTPS Server-side</b><br>
+                                <b>TLS</b>: Server Side connection where the host header is rewritten to match the on-premises hostname.</p>
+
+                            <p><b>HTTPS: Mutual Auth</b><br>
+                                <b>TLS</b>: Mutual Auth connection where the host header is rewritten to match the on-premises hostname.</p>
+
+                        </div>
+
+                        <div class="step">Click on the small gear icon <img src="./img/small_gear.png"> on your new destination.</div>
+
+                        <img class="standardImage" src="./img/1_5_3_A.png">
+
+                        <p>In this Details pop-up, you’ll notice there are two URLs, one for the Cloud Host : Port and one for the Resource Host:Port. The Cloud Host : Port has a URL that will allow you to get access to the information that is private in the GSC-Drones-To-Go service! </p>
+
+                        <div class="step">Copy the Cloud Host : Port URL and paste it below. (Use the clipboard icon in the pop-up)</div><br>
+
+
+
+
+                        <input id="cloudHostVal" style="width:50%" />
+                        <input id="done" type="button" value="submit" onclick="setCloudHost()" />
+
+
+
+                        <div id="confirmTextCloudHost">
+                            <div class="important">Do NOT move on until you have pasted and clicked submit on the Cloud Host : Port above and completed its subsequent steps!</div>
+                        </div>
+
+
+                        <div id="afterCloudHost" style="display:none">
+                            <div class="step">Click on the above link so that it opens in a new tab. Read below for help with bypassing security warnings in your browser.</div>
+
+                            <div class="problem question">
+                                ⚠️ I got a security warning / I do not see a response when I click the link. <span class="readmore">[Click to Troubleshoot]</span>
+                            </div>
+                            <div class="answer">
+                                <p>You may see a security warning when you click on your Cloud Host. Here are some common ways of bypassing the security warning temporarily, depending on your browser.</p>
+
+                                <p>Firefox: <a href="https://support.mozilla.org/en-US/kb/what-does-your-connection-is-not-secure-mean" target="_blank">https://support.mozilla.org/en-US/kb/what-does-your-connection-is-not-secure-mean</a></p>
+
+                                <p>Chrome: <a href="https://support.google.com/chrome/answer/99020?co=GENIE.Platform%3DAndroid&hl=en" target="_blank">https://support.google.com/chrome/answer/99020?co=GENIE.Platform%3DAndroid&hl=en</a></p>
+
+                                <p>Safari: <a href="http://safari.helpmax.net/en/privacy-and-security/turning-off-security-warnings/" target="_blank">http://safari.helpmax.net/en/privacy-and-security/turning-off-security-warnings/</a></p>
+
+                                <p>If you are still unable to get a response when you click the Cloud Host, use the Slack channel to post the message <b>"I am unable to get a response using my Cloud Host:Port in Step 1.5.3"</b>.</p>
+                            </div>
+
+                            <p>You may get a security warning – depending on your browser, there are ways to bypass this temporarily. You only want to test and see if you’re able to get back some details about the drone-controller.</p>
+
+
+                            <table class="section_withImage">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <p>You should see a response similar to what’s on the right. This is the data you get back from the private service! In the response, you will also notice fields named hostname and project_names, with values that reflect the POD and project name where your instance of the drone-controller was deployed in OpenShift Cluster B (visible back in Step 1.4.1). You will see that there are various routes now available - /status, /last_image, /video, /connected. These routes will be used when you connect to one of GSC-Drones-To-Go drones in your Remote Drone Operations Console. </p>
+
+                                            <p>
+                                                The secure gateway now provides an access mechanism to the identified resources that may not have been previously enabled to process requests from outside their private cloud or on-prem environment.
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <img class="rightFloat" src="./img/1_5_3_B.png">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+                    <!-- Finish Step 1 -->
+                    <div id="sec_finishStep1">
+                        <h2>
+                            <a name="finishStep1">Finish Step 1</a>
+                        </h2>
+                        <div class="sectionTitle">You completed Step 1! 🎉</div>
+                        <p>
+                            You have successfully setup Secure Gateway to allow connectivity to the GSC Drones-To-Go controller application running in Cluster B within the simulated private cloud.  This exemplifies the process that was used to connect the Remote Drone Operations Console to the on-prem GSC Drones-To-Go resources.
+                        </p>
+                        <div class="rect magentaRect single">
+                            <div class="in">
+                                Step 1 <b>Completed</b><br><br>
+                                <div class="list">
+                                    ✅ Access IBM Cloud <br>
+                                    ✅ Access RedHat OpenShift cluster <br>
+                                    ✅ Open RedHat OpenShift web console <br>
+                                    ✅ Setting up the Access Control List (ACL) <br>
+                                    ✅ Adding a Secure Gateway destination <br>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            In the next steps, you will continue to get more access to the GSC Drone-To-Go service. In Step 2, this access includes getting to work with the service’s APIs and learning more about them.
+                        </p>
+                        <div class="timeline">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="step completed">
+                                            <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                                            ☑ Access IBM Cloud <br>
+                                            ☑ Access RedHat OpenShift cluster <br>
+                                            ☑ Open RedHat OpenShift web console <br>
+                                            ☑ Setting up the Access Control List (ACL) <br>
+                                            ☑ Adding a Secure Gateway destination <br>
+                                        </td>
+                                        <td class="arrow">→</td>
+                                        <td class="step next">
+                                            <div class="title">Step 2 <b>Next</b></div><br>
+                                            ☑ Add a catalog<br>
+                                            ☑ Work with OpenAPI definitions <br>
+                                            ☑ Edit and publish API product <br>
+                                            ☑ Explore and test API <br>
+                                        </td>
+                                        <td class="arrow">→</td>
+                                        <td class="step">
+                                            <div class="title">Step 3</div><br>
+                                            ☑ Explore sensor database <br>
+                                            ☑ Set up App Connect flow <br>
+                                            ☑ Start the API <br>
+                                            ☑ Try out the flow <br>
+                                        </td>
+                                        <td class="arrow">→</td>
+                                        <td class="step">
+                                            <div class="title">Step 4</div><br>
+                                            ☑ Recap previous steps<br>
+                                            ☑ View configurations made for this lab<br>
+                                            ☑ Explore the drone viewer modal<br>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="nextStepBar" onClick="moveTo('s2')">
+                            Ready? Move on to Step 2 →
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- Begin Step 2 -->
+    <div id="step2" class="main">
+        <div id="menu">
+            <a href="#step2" class="start">Step 2</a>
+            <a href="#2_1">2.1 Add a catalog</a>
+            <a href="#2_2">2.2 Work with OpenAPI definitions</a>
+            <a href="#2_3">2.3 Edit and publish API product</a>
+            <a href="#2_4">2.4 Explore and test API</a>
+            <a href="#finishStep2" class="end">Finish Step 2</a>
+        </div>
+        <div id="content">
+            <div id="main">
+
+                <div id="sec_step2">
+                    <h1>
+                        <a name="step2">Step 2: Use API Connect to manage and expose a service’s APIs</a>
+                    </h1>
+                    <p>
+                        In the previous step, you enabled access to a private resource using Secure Gateway. Of course, connecting to a service involves much more than just enabling access. There are many actions you may want to perform in order to interact with the service as well – these actions and events must be understood by the service and your application.
+                    </p>
+
+                    <p>
+                        Think about a time you clicked “Checkout and Pay” on an online store or hit “Confirm Appointment” on a clinic’s website. It happens so quickly and seamlessly, and with just a few taps and clicks, disparate services are able to talk to one another so you can quickly get what you need. An API, or Application Programming Interface, is the messenger that takes requests and tells a system what you want to do and then returns the response back to you.
+                    </p>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td width="40%">
+                                    <img src="./img/2_overview.png" width="100%">
+                                </td>
+                                <td width="60%">
+                                    <p>
+                                        To make it easier, imagine you’re in your car at a drive-through fast food restaurant. When it’s your turn, you tell your order through the microphone or directly to the employee at the window. Your order is made inside, you pay, and your order is handed over to you. In this instance, the fast food restaurant’s kitchen staff are ready to cook - but they need some way of getting the orders to them. The employee at the window provides that link of communication - when you say “#3 with no onions”, the employee at the window understands, and the kitchen staff understand exactly what that means, and make the order. You know this worked by getting your result - a bag with “#3 with no onions” in it.
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Imagine how chaotic and disorderly it would be if everyone in the drive-through had to tell their order to kitchen staff directly. Thankfully, the employee at the window takes orders in a way that everyone can understand - you in your car, and the kitchen staff. The kitchen staff aren’t overwhelmed by taking orders from unfamiliar people, and the people in the drive-through can relax and not have to deal with communicating with the kitchen staff – they all end up talking to the one employee at the window. </p>
+
+                    <p>
+                        That employee at the window acts as the API, or the messenger, and the kitchen staff acts as a service you want something from.
+                    </p>
+
+                    <p>
+                        Now imagine if you owned a kitchen, or multiple kitchens all cooking different things – you would definitely need even more employees at the windows! How would you manage all of them? Is there an easier way to deal with order-taking employees that would work best for you? That’s where a service like API Connect comes in - it allows you to quickly create endpoints that can act as APIs and microservices, which are ready to be leveraged by other applications/services. You can also manage your APIs by setting varying levels of security and visibility, including rate limits. IBM API Connect is an integrated API management offering that allows developers to create, run, manage and secure APIs. The API Connect service also lets you transform and grow your business with insights through detailed analytics with structured filtered searches. In Step 2, you will specifically use API Connect to expose a set of APIs from that service you exposed using Secure Gateway (Step 1).
+                    </p>
+
+                    <p>
+                        Recall a similar diagram in the beginning of the previous step. As mentioned before, this diagram will grow as you complete each step – notice how this step has added to the different ways your Remote Operations Console communicates with added services.
+                    </p>
+
+                    <img class="standardImage" src="./img/flow_2.png">
+
+
+
+
+                    <div class="whole">
+                        <div class="rect blueRect">
+                            <div class="in">
+                                Technologies Used
+                                <br>
+                                <img src="./img/cloud.png" /><br>
+                                <img src="./img/openshift.png" /><br>
+                                <img src="./img/apiconnect.png" />
+                            </div>
+                        </div>
+
+                        <div class="rect magentaRect">
+                            <div class="in">
+                                Your Tasks for Step 2 <br><br>
+                                <div class="list">
+                                    ✅ Add a catalog <br>
+                                    ✅ Work with OpenAPI definitions <br>
+                                    ✅ Edit and publish API product <br>
+                                    ✅ Explore and test API <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="timeline">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="step completed">
+                                        <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                                        ☑ Access IBM Cloud <br>
+                                        ☑ Access RedHat OpenShift cluster <br>
+                                        ☑ Open RedHat OpenShift web console <br>
+                                        ☑ Setting up the Access Control List (ACL) <br>
+                                        ☑ Adding a Secure Gateway destination <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step inprogress">
+                                        <div class="title">Step 2 <b>In Progress</b></div><br>
+                                        ☑ Add a catalog<br>
+                                        ☑ Work with OpenAPI definitions <br>
+                                        ☑ Edit and publish API product <br>
+                                        ☑ Explore and test API <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step">
+                                        <div class="title">Step 3</div><br>
+                                        ☑ Explore sensor database <br>
+                                        ☑ Set up App Connect flow <br>
+                                        ☑ Start the API <br>
+                                        ☑ Try out the flow <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step">
+                                        <div class="title">Step 4</div><br>
+                                        ☑ Recap previous steps<br>
+                                        ☑ View configurations made for this lab<br>
+                                        ☑ Explore the drone viewer modal<br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+
+                <!-- 2.1 -->
+                <div id="sec_2_1">
+                    <h2>
+                        <a name="2_1">2.1 Add a catalog </a>
+                    </h2>
+
+                    <div class="sectionTitle">2.1.1</div>
+                    <p>
+                        In the first step, other services under the Resource List were shown but not delved into – including API Connect. This service exists already in the 1500867 – IBM account. Let’s start by navigating to the API Connect service.
+                    </p>
+
+                    <div class="step">In a new tab, open <a href="https://cloud.ibm.com/resources" target="_blank">https://cloud.ibm.com/resources</a>. <br>
+                         Then expand the Cloud Foundry Services section. <br>
+                        Click on DroneLab_API Connect-52.</div>
+
+                    <img class="standardImage" src="./img/2_1_1_A.png">
+
+                    <p>The API Connect dashboard may contain a few catalogs that already exist. Before you go any further, let’s take some time and learn what exactly catalogs are with regard to API Connect.</p>
+
+                    <div class="question">
+                        💡 What is a catalog? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <table class="section_withImage">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img class="leftFloat_h" src="./img/2_1_1_B.png">
+
+                                    </td>
+                                    <td>
+                                        <p>
+                                            A catalog is a published collection of products. Products can be managed to control the availability and visibility of APIs and plans. You are able to create, edit, and stage products.</p>
+                                        <p>
+
+                                            Within products are plans and APIs that you may want to group together. In the diagram below, notice how plans belong to only one product, can possess different APIs to other plans within the same product, and can share APIs with plans from any product.
+
+                                        </p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="section_withImage">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>Plans are used to differentiate between different offerings. Plans can also share APIs and can enforce rate limits. Plans can also specify billing costs for customers who use your products. For example, you can define three different plans for a single product. Each plan can have a different subscription cost and even a different rate limit that targets different customers. </p>
+
+                                        <p>At the bottom of the hierarchy, APIs (which were illustrated in the introduction of this step as the employee at the drive-through taking orders and giving them to the kitchen staff) are associated with the plans that exist in a product. All of these components form a definitive catalog that you will create in this sub-step. </p>
+                                    </td>
+                                    <td>
+                                        <img class="rightFloat" src="./img/2_1_1_C.png">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <div class="question">
+                        💡 Are there different kinds of catalogs? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>Yes, the current types of catalogs include: Development, Automatic subscription, and Default. </p>
+
+                        <p>Development - In a development Catalog, staging and publishing actions are forced, meaning that if you republish a previously published Product it is overwritten without warning. If conflicts are found, they are automatically resolved by the system. Unpublish actions happen automatically. By default, a development Catalog is provided for you. A development Catalog must be used only for test purposes. A Developer Portal created from a development Catalog must be used in the same way, that is, for testing purposes only and not for real cases. </p>
+
+                        <p>Automatic subscription - If you enable automatic subscription for a Catalog, testing of your APIs in the API Manager user interface is made easier because a test application is used, with a pre-supplied client ID and client secret, which is automatically subscribed to all the Plans in the Catalog, so you don't have to specify a plan or application when testing. The test application is not subject to rate limits. Automatic subscription is available only for a development Catalog. It’s important to note that Automatic subscription is supported only with the DataPower® Gateway. </p>
+
+                        <p>Default - You can set one of your Catalogs to be the default Catalog. Then, calls to APIs that are published to that Catalog can use a shorter URL that does not include the Catalog name. </p>
+                    </div>
+
+                    <p>
+                        Start by clicking the Add button in the top left corner and selecting “Catalog” from the dropdown menu. This will show a pop-up which will prompt you to provide a name. Your catalog name will be <span class="labnameHere">YourLabName</span>-catalog.
+                    </p>
+
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center"><img src="./img/2_1_1_D.png" class="sideImage_left_tb" /></td>
+                                <td>
+                                    <div class="step">Click the “Add” button in the top left corner, and select “Catalog” from the dropdown menu.</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img class="leftFloat_h" src="./img/2_1_1_E.png">
+
+                                </td>
+                                <td>
+                                    <div class="step">Change the Display Name * to <span class="labnameHere">YourLabName</span>-catalog, then click Add. <br>(This may take a few moments).</div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+                    <div class="sectionTitle">2.1.2</div>
+
+                    <img class="standardImage" src="./img/2_1_2_A.png">
+
+                    <p>
+                        You should see your newly created catalog now along with the others that already existed in the API Connect dashboard. Take a look at what the catalog provides out of the box before we begin adding to it.
+                    </p>
+
+                    <div class="step">Click on your newly created catalog.</div>
+
+                    <img class="standardImage" src="./img/2_1_2_B.png">
+
+                    <p>Along the top of this catalog are various options you can drill-down into – Products, Approvals, Community, Members, Analytics, and Settings. For now, let’s focus on getting ready for the next sub-step of importing API definitions. Click on the >> button in the top left corner, next to the home icon. This will open a side menu on the left side that contains Favorites, Dashboard, Drafts, and Admin. Let’s move to the Drafts.</p>
+
+                    <div class="step">Click on the >> button at the top left corner and select Drafts from the left side menu.</div>
+
+                    <img class="standardImage" src="./img/2_1_2_C.png">
+
+                    <p>Within the Drafts page, you may notice other products or API drafts which have not yet been deployed to a catalog. There are two options at the top – Products and APIs. When we import an API definitions file at the next sub-step, you will also be able to add a product at the same time. Click on APIs at the top to get ready for Step 2.2. To make it easier for this lab, we have already created an OpenAPI definition to get a drone's telemetry data that you can import into API Connect and modify. In the real-world, developers will create the API definitions using API Connect's easy-to build API Connect designer feature and distribute it.</p>
+
+                    <div class="step">Click on the APIs tab at the top.</div>
+
+                    <img class="standardImage" src="./img/2_1_2_D.png">
+
+
+
+                    <div class="question">
+                        💡 What are some common technical approaches with working with catalogs? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>Catalogs act as a staging target and a division of the gateway and the Developer Portal. They are useful for separating Products and APIs for testing before you make them available to Developer organizations. </p>
+
+                        <p>The URL for API calls and the Developer Portal are specific to a particular Catalog. In a typical configuration, an API provider organization uses a development Catalog for testing APIs under development and a production Catalog for hosting APIs that are ready for full use. A common approach is to have a development cloud with a development Catalog, a few test Catalogs and a production cloud that might have its own test Catalog. </p>
+
+                        <p>You can use a Space to partition a Catalog so multiple teams can manage Products and APIs independently in a single Catalog. A Space is conceptually like a sub-catalog, except that Products and APIs in all Spaces in a given Catalog are published to the same developer portal. For more information about Spaces, see Using syndication in IBM API Connect. </p>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+                <!-- 2.2 -->
+                <div id="sec_2_2">
+                    <h2>
+                        <a name="2_2">2.2 Work with OpenAPI definitions</a>
+                    </h2>
+                    <div class="sectionTitle">2.2.1</div>
+                    <p>
+                        In the previous sub-step, you navigated to the Drafts page in your new catalog, and left off at the APIs tab. It’s time to finally add a product with some API definitions to this catalog.
+                    </p>
+
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center"><img src="./img/openapi.png" class="sideImage_left_tb" /></td>
+                                <td>
+                                    <p>
+                                        Within API Connect, you can use an OpenAPI definition file to add a REST API. OpenAPI defines a standard, language-agnostic interface to RESTful APIs which allows both humans and computers to discover and understand the capabilities of the service without access to source code, documentation, or through network traffic inspection. When properly defined, a consumer can understand and interact with the remote service with a minimal amount of implementation logic. An OpenAPI definition can then be used by documentation generation tools to display the API, code generation tools to generate servers and clients in various programming languages, testing tools, and many other use cases.
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="question">
+                        💡 What is REST API? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        REST is acronym for REpresentational State Transfer. It is architectural style for distributed hypermedia systems. Read more about RESTful APIs here: <a href="https://restfulapi.net/" target="_blank">https://restfulapi.net/</a>.
+
+                    </div>
+
+                    <img class="standardImage" src="./img/2_2_1_A.png">
+
+                    <div class="step">
+                        Click on the Add button in the top left, and select “Import API from a file or URL”.<br>
+                        Then Select “Or import from URL…”
+                    </div>
+
+
+
+                    <p>For your convenience, we have already provided an easy-to-use OpenAPI Swagger YAML file URL. The link provided is custom to you – your lab name – and will provide all the definitions required for setting up the APIs for this catalog. There are fields available for Username/Password authentication should your URL require it, but the URL provided to you does not require this authentication, so leave it blank.</p>
+
+                    <div class="step">Use the Copy to clipboard button below for your API Connect YAML file URL and paste is into the URL field for Import OpenAPI (Swagger).</div>
+
+                    <div class="codeblock">
+                        <div class="text-wrap">
+                            Your API Connect YAML file URL<br>
+                            <textarea class="yamlURLHere" id="text-yaml" readonly>http://drone-lab-2-yaml-template-lab-2-admin.mycluster-dal12-b-632406-ed9112eb83c761afd4c566b0882eaa3e-0000.us-south.containers.appdomain.cloud/api-connect-template/yourLabName.yaml</textarea>
+                            <br>
+                            <div id="copyToClipboard-yaml" class="clipboardButton">Copy to clipboard</div>
+                            <div id="notif-yaml" class="notif"></div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        💡 What is a YAML? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        YAML (rhymes with "camel” and is a recursive acronym – “YAML Ain't Markup Language ") is a straightforward machine parseable data serialization format designed for human readability and interaction with scripting languages such as Perl and Python. YAML is optimized for data serialization, configuration settings, log files, Internet messaging and filtering. This specification describes the YAML information model and serialization format. Read more about YAML here <a href="https://yaml.org/spec/history/2001-12-10.html" target="_blank">https://yaml.org/spec/history/2001-12-10.html</a>.
+                    </div>
+
+                    <p>Once you have pasted your API Connect YAML file URL, go ahead and check “Add a product” - new fields will show below. For this lab, as you import this  API definition, you also want to create a new product for the API.</p>
+
+                    <p>If someone already had an existing product,  they could simply import the API definition and choose to add it to a product later. Importing API definitions will allow you to also add a product along with it at the same time. Make sure your information is similar to the below images – under Info, the title of your product should be yourLabName-product. And under Publishing, make sure “Publish this product to a catalog” is checked and then select your newly formed catalog, yourLabName-catalog, from the list. Once these details are added, click “Import”. It’s important to note that APIs become accessible to other application only when a product is published in a catalog.</p>
+
+                    <div class="step">Check “Add a product”</div>
+
+                    <img class="standardImage" src="./img/2_2_1_B.png">
+
+                    <div class="step">
+                        Under <b>Info</b>:<br>
+                        1. Set the <b>Title</b> field to <span class="magenta"><span class="labnameHere">YourLabName</span>-product</span>.<br><br>
+                        
+                        Under <b>Publishing</b>:<br>
+                        
+                        2. Check <span class="magenta">Publish this product to a catalog</span> and<br>
+                        3. select <span class="magenta"><span class="labnameHere">YourLabName</span>-catalog</span><br>
+                        4. Then click <span class="magenta">Import</span> at the bottom.
+                    </div>
+
+                    <img class="standardImage" src="./img/2_2_1_C.png">
+
+                    <p>After clicking Import and entering the correct details above, your page will update and look similar to the image below. You are now in the Design view of the APIs – and thanks to the work you did just now, you were able to import the API into a new product, and associate it with your catalog.  In the next sub-step, you will explore this page a bit more and make a few changes as well.</p>
+
+                    <img class="standardImage" src="./img/2_2_1_D.png">
+
+
+                </div>
+
+                <!-- 2.3 -->
+                <div id="sec_2_3">
+                    <h2>
+                        <a name="2_3">2.3 Edit and publish API product</a>
+                    </h2>
+                    <div class="sectionTitle">2.3.1</div>
+                    <p>
+                        In this Design view, you have access to a working draft of the API you imported. There’s a side menu on the left which contains headings for all of the sections related to this API. Indeed, this entire YAML-style page scrolls and is split up by these sections. Feel free to pause these instructions and scroll up and down this Design view. </p>
+
+                    <p>
+                        Some sections to pay attention to include the first one at the top –like Info which contains the foundational details related to this API. Scrolling a little further down, the section Scheme designates the HTTPS configuration this API uses.
+                    </p>
+
+                    <p>
+                        Looking over the Parameters section will be useful in Step 2.4 when you test the API itself – pay attention to the two user-defined parameters, drone_id and time_stamp, which provide drone identifier and time stamp to fetch the associated drone information.
+                    </p>
+
+                    <p>
+                        The Path section is where the endpoint path is defined – currently it’s just GET /status. When you imported the API definitions in the previous sub-step, those definitions were already created for you based on your customized YAML file.
+                    </p>
+
+                    <p>
+                        Let’s move on by setting the path of the target endpoint of the exposed drone controller application that we enabled with Secure Gateway in Step 1. Scroll to or click the Properties heading on the side menu.
+                    </p>
+
+                    <div class="step">After exploring the Design view page, click on the Properties section on the side menu. </div>
+
+                    <img class="standardImage" src="./img/2_3_1_A.png">
+
+                    <p>
+                        Once you’re selected the Properties section, find and click on the selected API property – target_host, a user-defined property where connection information will be provided to reach the necessary target resource. Clicking target_host will expand to show catalog-specific values for this property that you’ll need to edit.
+                    </p>
+
+                    <div class="step">Click on the target_host property to expand details. </div>
+
+                    <p>
+                        Take a closer look at this target_host property. As its description suggests, this property specifies the host for the target URL. Remember at the end of Step 1, you pasted the Cloud Host : Port into these instructions for future usage. Later on, the target_host value for this API is manipulated based on the value it has been provided. Let’s replace this current value with your Cloud Host, conveniently provided below.
+                    </p>
+
+                    <div class="step">Click the Copy to clipboard button below and replace the current value in the Default Catalog with Your Secure Gateway Cloud Host URL.</div>
+
+                    <div class="codeblock">
+                        <div class="text-wrap">
+                            Your Cloud Host<br>
+                            <textarea class="cloudHostHere" id="text-cloudhost" readonly>https://your-Cloud-Host-URL (please complete the step at the end of Step 1!) </textarea>
+                            <br>
+                            <div id="copyToClipboard-cloudhost" class="clipboardButton">Copy to clipboard</div>
+                            <div id="notif-cloudhost" class="notif"></div>
+                        </div>
+                    </div>
+
+                    <img class="standardImage" src="./img/2_3_1_B.png">
+
+                    <p>
+                        Now that you have made that change, click on the Save button (floppy disk icon) in the top right corner. You should see a quick alert in the top right informing you that your API is now saved.
+                    </p>
+
+                    <div class="step">Save your changes by clicking the Save button in the top right corner.</div>
+
+                    <img class="standardImage" src="./img/2_3_1_C.png">
+
+
+                    <div class="sectionTitle">2.3.2</div>
+
+                    <p>
+                        Making changes to the API requires republishing the API product. Navigate away from the Design view to the Assemble view – located in the Assemble tab along the top of the page.
+                    </p>
+
+                    <div class="step">Click on the Assemble tab at the top of the page.</div>
+
+                    <img class="standardImage" src="./img/2_3_2_A.png">
+
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center"><img src="./img/2_3_2_B.png" class="sideImage_left_tb" /></td>
+                                <td>
+                                    <p>
+                                        This Assemble view provides tooling for simple to complex flows that can be tested. You’ll notice there’s already a default action pre-configured (invoke). We won’t be changing anything here as this lab doesn’t involve further configuration of flows within API Connect.
+                                    </p>
+
+                                    <p>
+                                        You need to republish the changes you previously made. Click on the Play button ▶ near the top to change the side menu.
+                                    </p>
+
+                                    <div class="step">Click on the Play button ▶ near the top to change the side menu. </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>The side menu on the left updates with new options regarding setup – you can double-check to make sure the correct catalog and product is selected before you republish. Once you’re ready, click Republish product so that your earlier changes are ready to go. It may take a few seconds for it to finish. In the next step, you will finally get to test out this new API and view its data response.</p>
+
+                    <div class="step">
+                        Click Republish product, making sure that that the catalog and product match those that you created. <br><i>(If your screen doesn't look like this, you may need to click Change Setup first).</i>
+                    </div>
+
+                    <img class="standardImage" src="./img/2_3_2_C.png">
+
+                </div>
+
+
+
+
+                <!-- 2.4 -->
+                <div id="sec_2_4">
+                    <h2>
+                        <a name="2_4">2.4 Explore and test API</a>
+                    </h2>
+                    <div class="sectionTitle">2.4.1</div>
+                    <p>
+                        At this point you have successfully created a catalog, imported and edited an API within a new product,  and republished it to your catalog.  The API is now ready to be tested. Recall in the introduction of this step – APIs act as messengers between applications and services. In the previous sub-step, you saw the GET /status endpoint – it required two values (drone_id and time_stamp). When you make a request to get information about a specific drone at a specific time, you will get back a response that includes information in a format that is understood.
+                    </p>
+                    <p>
+                        Let’s begin trying out the API by clicking the Explore button in the top right corner. This will open a list where you can select your own catalog, yourLabName-catalog.
+                    </p>
+
+                    <div class="step">Click the Explore button in the top right corner, then click on <span class="labnameHere">YourLabName</span>-catalog from the Catalogs.</div>
+
+                    <img class="standardImage" src="./img/2_4_1_A.png">
+
+                    <p>
+                        The Explore tool is used to test API endpoints. It shows the operations for all of the APIs that are contained in a specified catalog. The left pane of the Explore window can be used to select an operation to test. The center pane displays summary information about the endpoint, including its parameters, model instance data, and response codes, and the right pane provides template code to call the endpoint. Let’s focus on the right pane for now. Notice the URL at the top preceded by GET, and the curl request. Click on “Try it” to start testing yourself.
+                    </p>
+
+                    <img class="standardImage" src="./img/2_4_1_B.png">
+
+
+
+                    <div class="problem question" style="background-color:lightgreen !important">
+                        ✅ I see the "Try It" button, similar to the screenshot. <span class="readmore">[Click to Continue]</span>
+                    </div>
+                    <div class="answer">
+                        <div class="step">Click on “Try it” in the right pane.</div><br>
+                        <p>
+                            The right pane changes to a view where you see the Type headers which are used to indicate the media type of the resource. In this case, you want to read a JSON response. The parameters are listed below and should be familiar – for this current example, change the value of drone_id to drone1 and the value of time_stamp to 0. Then click Call Operation.
+                        </p>
+
+                        <div class="step">Change the drone_id value to drone1 and time_stamp value to 0. Then click Call Operation. </div>
+
+                        <img class="standardImage" src="./img/2_4_1_C.png">
+
+                        <p>
+                            Once you click Call Operation, you should see a Response added to the bottom of the right pane. The actual request information is listed above. The response includes a response code, headers, and a JSON response that contains data regarding the endpoint you requested – get status of drone #1 (drone_id), at the very beginning (time_stamp). It is served to you in a way that you can understand – and more importantly – your remote drone operations console can understand as well!
+                        </p>
+
+                        <img class="standardImage" src="./img/2_4_1_D.png">
+                        <br><br>
+                        <div class="question">
+                            💡 What are response codes (like the number 200)? <span class="readmore">[Click to Read More]</span>
+                        </div>
+                        <div class="answer">
+                            HTTP response status codes indicate whether a specific HTTP request has been successfully completed. Responses are grouped in five classes:
+                            Informational responses (100–199), Successful responses (200–299), Redirects (300–399), Client errors (400–499), and Server errors (500–599)
+                        </div>
+
+                        <br>
+
+                        <p>
+                            <h3>Checkpoint </h3>
+                        </p>
+
+                        <p>
+                            Scroll through the JSON response and look for "location”. Does your location value match what was expected? Use the “Click to show answer” and test it yourself!</p>
+
+                        <div class="checkpoint1" onclick="checkpoint1()">Step 2 Checkpoint: [Answer hidden - Click here to check your answer!]</div>
+
+                        <p>Did your response’s location value match? <span class="green">Congratulations!</span> You are ready to move onto Step 3.<br/><br/> <b>Ignore</b> the <i>"⚠️ I don’t have a "Try It" button, and my screen does NOT match the screenshot!"</i> below and <b>scroll to Finish Step 2</b>. </p>
+
+                        <br><br>
+                        <br><br>
+
+
+                    </div>
+
+                    <div class="problem question">
+                        ⚠️ I don’t have a "Try It" button, and my screen does NOT match the screenshot! <span class="readmore">[Follow workaround]</span>
+                    </div>
+                    <div class="answer">
+                        <p>This <span class="tblue">Explore</span> function in IBM Cloud seems to have issues with some browsers and/or browser settings. Below is an <b>alternative path</b> to test your API.</p><br>
+
+                        1. Click on the <b>x</b> on the top right corner of the page.<br>
+
+                        <img src="./img/2_4_1_QA.png" width="100%"><br>
+
+                        2. As shown in <b>Step 2.3.2</b>, go to <b>Assemble</b> tab. Click on the <b>small gray play button</b>.<br>
+
+                        <img src="./img/2_4_1_QB.png" width="100%"><br>
+
+                        3. On the left, click the dropdown under Operation (Choose an operation to invoke) and select <b>get /status</b>.
+                        <img src="./img/2_4_1_QC.png" width="100%"><br>
+
+                        4. Add the following values - <b>drone_id:</b> drone1, <b>time_stamp:</b> 0, then scroll down and click <b>Invoke</b>.<br>
+                        <img src="./img/2_4_1_QD.png" width="100%"><br>
+
+                        5. View the response and continue instructions below.
+                        <img src="./img/2_4_1_QE.png" width="100%">
+                        <br><br>
+
+                        <div class="question">
+                            💡 What are response codes (like the number 200)? <span class="readmore">[Click to Read More]</span>
+                        </div>
+                        <div class="answer">
+                            HTTP response status codes indicate whether a specific HTTP request has been successfully completed. Responses are grouped in five classes: 
+                            Informational responses (100–199), Successful responses (200–299), Redirects (300–399), Client errors (400–499), and Server errors (500–599)
+                        </div>
+
+                        <br><br>
+
+                        <p>
+                            <h3>Checkpoint </h3>
+                        </p>
+
+                        <p>
+                            Scroll through the JSON response and look for "location”. Does your location value match what was expected? Use the “Click to show answer” and test it yourself!</p>
+
+                        <div class="checkpoint1" onclick="checkpoint2()">Step 2 Checkpoint: [Answer hidden - Click here to check your answer!]</div>
+
+                        <p>Did your response’s location value match? <span class="green">Congratulations!</span> You are ready to move onto Step 3.</p>
+
+                        <br><br>
+                        <br><br>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                </div>
+
+                <!-- Finish Step 2 -->
+                <div id="sec_finishStep2">
+                    <h2>
+                        <a name="finishStep2">Finish Step 2</a>
+                    </h2>
+                    <div class="sectionTitle">You completed Step 2! 🎉</div>
+                    <p>
+                        You successfully used API Connect to expose APIs in the GSC Drones-To-Go service by creating a catalog, importing a YAML file with API definitions, made changes, republished, and tested out the API within the API Connect Explore tool.
+                    </p>
+                    <div class="rect magentaRect single">
+                        <div class="in">
+                            Step 2 <b>Completed</b><br><br>
+                            <div class="list">
+                                ✅ Add a catalog <br>
+                                ✅ Work with OpenAPI definitions <br>
+                                ✅ Edit and publish API product <br>
+                                ✅ Explore and test API <br>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        In the next step, you will use another service to demonstrate the value of invoking flows involving other services.
+                    </p>
+                    <div class="timeline">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="step completed">
+                                        <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                                        ☑ Access IBM Cloud <br>
+                                        ☑ Access RedHat OpenShift cluster <br>
+                                        ☑ Open RedHat OpenShift web console <br>
+                                        ☑ Setting up the Access Control List (ACL) <br>
+                                        ☑ Adding a Secure Gateway destination <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 2 <b>Completed ✅</b></div><br>
+                                        ☑ Add a catalog<br>
+                                        ☑ Work with OpenAPI definitions <br>
+                                        ☑ Edit and publish API product <br>
+                                        ☑ Explore and test API <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step next">
+                                        <div class="title">Step 3 <b>Next</b></div><br>
+                                        ☑ Explore sensor database <br>
+                                        ☑ Set up App Connect flow <br>
+                                        ☑ Start the API <br>
+                                        ☑ Try out the flow <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step">
+                                        <div class="title">Step 4</div><br>
+                                        ☑ Recap previous steps<br>
+                                        ☑ View configurations made for this lab<br>
+                                        ☑ Explore the drone viewer modal<br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="nextStepBar" onClick="moveTo('s3')">
+                        Ready? Move on to Step 3 →
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- Begin Step 3 -->
+    <div id="step3" class="main">
+        <div id="menu">
+            <a href="#step3" class="start">Step 3</a>
+            <a href="#3_1">3.1 Explore sensor database</a>
+            <a href="#3_2">3.2 Set up App Connect flow</a>
+            <a href="#3_3">3.3 Start the API</a>
+            <a href="#3_4">3.4 Try out the flow</a>
+            <a href="#finishStep3" class="end">Finish Step 3</a>
+        </div>
+        <div id="content">
+            <div id="main">
+
+                <div id="sec_step3">
+                    <h1>
+                        <a name="step3">Step 3: Connect to another service with App Connect</a>
+                    </h1>
+
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left">
+                                    <p>
+                                        Imagine you’re in charge of running a small event online at your workplace. Whenever someone registers for the event, you want them to receive a (1) confirmation email, (2) Slack message telling them where they can connect with others about the event, and (3) store their registration information in an Excel sheet.
+                                    </p>
+
+                                    <p>
+                                        This could be all done manually – but obviously, you’re a busy person, and you may only get time sparingly to do this, and it is still prone to human error. It may get overwhelming if a lot of people sign up at the same time. You may also think – aren’t there services that can do this automatically for me?
+                                    </p>
+
+                                </td>
+                                <td>
+                                    <img src="./img/3_overview_A.png" class="sideImage_left_tb" />
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        In Step 2, you imported API definitions that were able to be tested within API Connect. You were able to view that response data that the API produced – data that could be part of a bigger flow of events. For the event example above, you could use the registration data and have a template for an email ready to go. The registration data could also be used to automatically send a pre-defined Slack message to the signed-up person, and automatically add a row of information to an Excel sheet.
+                    </p>
+
+                    <p>
+                        IBM® App Connect connects all these applications very quickly, regardless of whether they are on the cloud or a private network. And significantly, there is no coding required. Using the App Connect Designer on IBM Cloud makes it easy to connect apps, even applications like Salesforce, Marketo, and SAP, so that when an event occurs in one application, or a request is made to an API, the other connected apps are updated automatically.
+                    </p>
+
+                    <p>
+                        Below are some common templates used on App Connect. These contain prebuilt flows which can be created for an API, so that when the request is submitted (such as through a mobile or web application), the flow performs all its actions, and then returns a response that either confirms that the actions were successful, or returns the data that was requested.
+                    </p>
+
+                    <img class="standardImage" src="./img/3_overview_B.png">
+
+                    <p>
+                        The lab diagram that has been referenced before is finally complete – take a look below and notice how each step was able to add onto the connections that your Remote Operations Console application had access to. With each service, your application became more powerful due to it being linked to useful resources. As it suggests, you will use the response data you previewed in Step 2, which included the location of the drone, to retrieve data from a database of sensors, thereby creating a very helpful list of sensors near the drone.
+                    </p>
+
+                    <img class="standardImage" src="./img/flow_3.png">
+
+
+
+
+                    <div class="whole">
+                        <div class="rect blueRect">
+                            <div class="in">
+                                Technologies Used
+                                <br>
+                                <img src="./img/cloud.png" /><br>
+                                <img src="./img/openshift.png" /><br>
+                                <img src="./img/appconnect.png" />
+                            </div>
+                        </div>
+
+                        <div class="rect magentaRect">
+                            <div class="in">
+                                Your Tasks for Step 3 <br><br>
+                                <div class="list">
+                                    ✅ Explore sensor database <br>
+                                    ✅ Set up App Connect flow <br>
+                                    ✅ Start the API <br>
+                                    ✅ Try out the flow <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="timeline">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="step completed">
+                                        <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                                        ☑ Access IBM Cloud <br>
+                                        ☑ Access RedHat OpenShift cluster <br>
+                                        ☑ Open RedHat OpenShift web console <br>
+                                        ☑ Setting up the Access Control List (ACL) <br>
+                                        ☑ Adding a Secure Gateway destination <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 2 <b>Completed ✅</b></div><br>
+                                        ☑ Add a catalog<br>
+                                        ☑ Work with OpenAPI definitions <br>
+                                        ☑ Edit and publish API product <br>
+                                        ☑ Explore and test API <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step inprogress">
+                                        <div class="title">Step 3 <b>In Progress</b></div><br>
+                                        ☑ Explore sensor database <br>
+                                        ☑ Set up App Connect flow <br>
+                                        ☑ Start the API <br>
+                                        ☑ Try out the flow <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step">
+                                        <div class="title">Step 4</div><br>
+                                        ☑ Recap previous steps<br>
+                                        ☑ View configurations made for this lab<br>
+                                        ☑ Explore the drone viewer modal<br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+
+                <!-- 3.1 -->
+                <div id="sec_3_1">
+                    <h2>
+                        <a name="3_1">3.1 Explore sensor database</a>
+                    </h2>
+
+                    <div class="sectionTitle">3.1.1</div>
+                    <p>
+                        Before you access the App Connect service, let’s take a look at the database of sensors. In real-life situations, a Public Safety Situational Awareness Operator may want to quickly look at the nearby sensors to gauge the condition of the location they are viewing through the drone. It’s convenient that the GET /status API provided in Step 2 contains the latitude and longitude of the done location that can be used with the sensor location coordinates as well.
+                    </p>
+
+                    <div class="step">Open <a href="https://cloud.ibm.com/resources" target="_blank">https://cloud.ibm.com/resources</a> and under the Services section, click on DroneLab_Cloudant-cd.</div>
+
+                    <img class="standardImage" src="./img/3_1_1_A.png">
+
+                    <p>
+                        The sensors’ information is stored in a Cloudant database. IBM Cloudant® is a fully managed, distributed database and is provided as an offering on IBM Cloud. It has already added to your IBM Cloud account. Once you click on the service, launch the dashboard to view the databases. You will take a look at the databased named sensordb.
+                    </p>
+
+                    <div class="step">Click Launch Dashboard.</div>
+
+                    <img class="standardImage" src="./img/3_1_1_B.png">
+
+                    <div class="step">Click sensordb.</div>
+
+                    <img class="standardImage" src="./img/3_1_1_C.png">
+
+                    <div class="step">Click sensorGeo to expand. <br>Then click Geospatial Indexes to expand. <br>Next, click sensorGeoIndex to show Cloudant’s geospatial tool to visualize the underlying data.</div>
+
+                    <img class="standardImage" src="./img/3_1_1_D.png">
+
+
+                    <div class="sectionTitle">3.1.2</div>
+
+                    <p>
+                        Once you click the sensordb database, a list of sensor information will be displayed.
+                    </p>
+
+                    <p>
+                        One of the many features Cloudant provides is IBM Cloud Geospatial, or "IBM Cloudant Geo”. Cloudant Geo combines the advanced geospatial queries of a Geographic Information System (GIS) with the flexibility and adaptability of IBM Cloudant's database-as-a-service (DBaaS) capabilities. These capabilities include GeoJSON, IBM Cloudant Geo index, and more.
+                    </p>
+
+                    <p>
+                        With IBM Cloudant Geo, all of the following are possible:
+                    </p>
+
+                    <p>
+                        (1) Enable web and mobile developers to enhance their applications by using geospatial operations that go beyond simple bounding boxes<br>
+                        (2) Integrate with existing GIS applications, so that they can scale to accommodate different data sizes, concurrent users, and multiple locations.<br>
+                        (3) Provide a NoSQL capability for GIS applications, so that large streams of data can be acquired from devices, sensors, and satellites. This data can then be stored, processed, and syndicated across other web applications.
+                    </p>
+
+                    <p>
+                        Let’s take advantage of this feature. Sensors have locations that be filtered on – within Cloudant, you’re able to draw polygons on a map and define spatially which sensors to display in a given bounded area. Go ahead and draw a circle on the map to filter sensors.
+                    </p>
+
+
+                    <div class="step">Use the Circle (dot icon) Tool on the right menu bar to draw a circle around a map area of your choosing.</div>
+
+                    <img class="standardImage" src="./img/3_1_2_A.png">
+
+                    <div class="step">Once you’ve made a circle, click on the { } JSON button at the top to view the sensor information in your drawn circle.</div>
+
+                    <img class="standardImage" src="./img/3_1_2_B.png">
+
+                    <p>
+                        The circle you drew has filtered the sensors to only return the ones that are located within the boundary. When you click the JSON view, the list of JSON data pertains to the sensor markers shown on the Map view.  While the details returned  at this point is limited to the identifier and coordinates for each individual sensor, this information could then be used to query the type and values for each sensor which is useful in later lab sub-steps.
+                    </p>
+
+                    <p>
+                        In the next sub-steps, you will use the location data you were able to return in the end of Step 2 in combination with the information located in the sensors in this database to return a list of sensors nearby.
+                    </p>
+
+                </div>
+
+
+                <!-- 3.2 -->
+                <div id="sec_3_2">
+                    <h2>
+                        <a name="3_2">3.2 Set up App Connect flow</a>
+                    </h2>
+
+                    <div class="sectionTitle">3.2.1</div>
+
+                    <p>
+                        Now that you have a preview of what the sensor database and its information looks like, let’s set up the flow. Close the two tabs you just opened related to the sensor database, and open the App Connect service in your IBM Cloud Resources. Then, click Launch App Connect to begin.
+                    </p>
+
+                    <div class="step">
+                        Close the two recent tabs:<br><br>
+                        current page for Map/JSON data of the sensors<br>
+                        the DroneLab_Cloudant-cd page<br><br>
+                        Then open <a href="https://cloud.ibm.com/resources" target="_blank">https://cloud.ibm.com/resources</a> and expand to the Cloud Foundry services. <br>Next, click the DroneLab-App Connect-68 service.<br><br>
+
+                        Click Launch App Connect.
+                    </div>
+
+                    <img class="standardImage" src="./img/3_2_1_A.png">
+
+                    <p>
+                        This is the App Connect Home. You may notice that there may been integrations that have already been created – these artifacts reflect connections that other users have made. This dashboard also provides an overview of available functions that App Connect provides.
+                    </p>
+
+
+                    <img class="standardImage" src="./img/3_2_1_B.png">
+
+
+                    <div class="sectionTitle">3.2.2</div>
+                    <p>
+                        Let’s start by clicking on the Dashboard icon (you may need to hover to view it) on the black left side menu. In order to add a new flow, you will import its definitions that have been provided for you (similar to Step 2). On the top right corner, click New and then Import flow.
+                    </p>
+
+                    <img class="standardImage" src="./img/3_2_2_A.png">
+
+
+
+                    <div class="step">Click the Dashboard icon on the left side menu.<br>Next, click the New + icon in the top right corner. <br>Then click Import flow…</div>
+
+                    <p>
+                        Using the copy to clipboard button, copy your YAML file URL below and paste it into the pop-up’s, “or specify a file URL” field. When you click Add file, it will import the YAML file containing your lab name. Click import to complete the process.
+                    </p>
+
+                    <div class="step">Use the copy to clipboard below and paste your URL into the ‘or specify a file URL’ field. Then click Add file.</div>
+
+                    <div class="codeblock">
+                        <div class="text-wrap">
+                            Your App Connect YAML file URL<br>
+                            <textarea class="appconnectURLHere" id="text-appconnect" readonly>http://drone-lab-2-yaml-template-lab-2-admin.mycluster-dal12-b-632406-ed9112eb83c761afd4c566b0882eaa3e-0000.us-south.containers.appdomain.cloud/app-connect-template/yourLabName.yaml</textarea>
+                            <br>
+                            <div id="copyToClipboard-appconnect" class="clipboardButton">Copy to clipboard</div>
+                            <div id="notif-appconnect" class="notif"></div>
+                        </div>
+                    </div>
+
+                    <img class="standardImage" src="./img/3_2_2_B.png">
+
+                    <p>
+                        Once the flow has been added (this may take a few seconds), the screen will update with Define view for the flow you created. Remember these two functions – <b>retrieveSensordata</b> and <span class="blue">getNearBySensors</span>. You will focus on <span class="blue">getNearBySensors</span> for the purposes of activities in the next several steps, but you will also be exposed to <b>retrieveSensordata</b> and asked to consider it within the context of the lab’s Production Flow used by the Remote Drone Console application.
+                    </p>
+
+                    <p>
+                        Take a look at the various Properties associated with the <span class="blue">getNearBySensors</span> – droneid, lat, lon, radius, and response. You will provide a droneid, the latitude and longitude coordinates from the drone, and the radius you are interested in, and get a response. Notice that these properties are strings as well.
+                    </p>
+
+                    <p>
+                        You may have noticed that <b>retrieveSensordata</b> has fewer Properties – only droneid and response. This will be explained as you continue through this lab section.
+                    </p>
+
+
+                    <img class="standardImage" src="./img/3_2_2_C.png">
+
+
+
+
+                    <div class="sectionTitle">3.2.3</div>
+
+                    <p>
+                        The <span class="blue">getNearBySensors</span> API is a simple API flow to demonstrate the capability and simplicity of the App Connect cloud service. For the lab, we developed this flow to show how a web application could get access to Cloudant sensor data that is in close proximity to a given drone’s location by providing the lat/long as input.
+                    </p>
+
+                    <p>
+                        The <b>retrieveSensordata</b> may be more typical of a production API flow in that it combines several steps and includes some additional logic. Specifically, this flow is different from the simplified <span class="blue">getNearBySensors</span> API flow as it retrieves the drone’s status and telemetry data using the drone controller’s GET/status API (from API Connect), parses the response to find the drone's location (latitude/longitude) information, and then uses those locations details as input to retrieve sensor readings from the Cloudant database that are in the relevant area. This flow is used by the Remote Drone Console application as part of the lab’s Production Flow.
+                    </p>
+
+                    <p>
+                        App Connect provides a model-driven, code-free approach that lets you easily implement your API operations as integration flows. For less experienced users, App Connect guides you through making models and integration flows you can use to build robust APIs. For experienced developers, App Connect's powerful tooling lets you extend the flow through code. In either model, the tool then builds well-formed OpenAPI definitions automatically. 
+                    </p>
+
+                    <p>
+                        You can preview the flow within App Connect for <span class="blue">getNearBySensors</span> by clicking on the Operations tab on the section and then Edit flow (this may appear as "View Flow". The flow you see is linear – Request > HTTP Invoke method > JSON Parse > Response. As you continue to finish this lab, consider how this flow could be used within the Remote Console Operations application.
+                    </p>
+
+                    <div class="step">Click on Operations in the getNearBySensors section (the second box) and then Edit flow. (This may also appear as "View Flow").</div>
+
+                    <img class="standardImage" src="./img/3_2_3.png">
+
+                    <p>
+                        You can see that a simple linear visual flow represents the step by step actions that happen within the getNearBySensors API. If you click on each step in the visual flow, you will see the details reflected underneath. For example, the output below shows the details of the <b>HTTP</b> step.
+                    </p>
+
+                    <img class="standardImage" src="./img/3_2_3_NA.png">
+
+                    <div class="step">Click <span class="magenta">Done</span> to close the <b>Edit view</b>.</div>
+
+                    <div class="question">
+                        💡 Want to know more about the <b>retrieveSensordata</b> production flow? <span class="readmore">[Click to Read More]</span>
+                    </div>
+                    <div class="answer">
+                        <p>As mentioned above, the retrieveSensordata API flow is used in the lab’s Production Flow to expose an endpoint for the Remote Drone Console application to dynamically find the location on the drone and then access relevant sensor data that is nearby.</p>
+
+                        <p>
+                            The flow uses the following connectors and tools:<br>
+                            HTTP endpoint: To invoke the GET /status REST API call of API Connect (configured to the drone controller in GSC Private Cloud)<br>
+                            HTTP endpoint: To invoke the Cloudant’s geospatial REST API call<br>
+                            JSON Parsers: To parse the resultant HTTP response and map it to a defined object
+                        </p>
+
+                        <p>OPTIONAL: If you want to see the full flow, you can use “Edit flow” after clicking Operations within the retrieveSensordata section. (The button may also appear as “View Flow”). </p>
+
+                        <img class="standardImage" src="./img/3_2_3_QA.png">
+
+                        <p>Notice the slider tool above the flow, which allows you to zoom out to the see see the entire flow or zoom in to a specific area of concern. Just as with the getNearBySensors flow, you can click an of the individual steps to see the corresponding details reflected underneath the flow.</p>
+
+                        <div class="step">When you are done exploring this flow, make sure to click <b>Done</b> to close the <b>Edit</b> view.</div>
+                    </div>
+
+
+                </div>
+
+                <!-- 3.3 -->
+                <div id="sec_3_3">
+                    <h2>
+                        <a name="3_3">3.3 Start the API</a>
+                    </h2>
+                    <div class="sectionTitle">3.3.1</div>
+
+                    <p>
+                        Now that you have set up the flow in App Connect, let’s test it out – but first, you’ll need to start the API and change authentication settings.  Begin by moving to the Manage view.
+                    </p>
+
+                    <p>If you are unable to see or view the Manage tab, refresh the page. You may need to change browsers if this does not work.
+                    </p>
+
+                    <p>
+                        Once you’re in the Manage view, you’ll be able to view and change settings related to the API flow.
+                    </p>
+
+                    <p>
+                        Scroll down to the Security and Rate Limiting section. Pay attention to the section names as some are named similarly. For this lab, you will turn off “Require application via API key”. This lab does not include viewing the usage of the APIs so this authentication isn’t required. It should be noted that for production level implementations, it may be appropriate to require authentication so that applications that use this API would need to authenticate using an API key and secret or API key alone.   This section would thus manage its key sharing and provide visibility into the API usage after the API is online. Make sure you scroll down and save this change once it is turned off.
+                    </p>
+
+                    <div class="step">
+                        Click on the Manage tab at the top.<br><br>
+
+                        Under the Security and Rate Limiting section, turn off Require application authentication via API key. Then scroll to click Save.
+                    </div>
+
+                    <img class="standardImage" src="./img/3_3_1.png">
+
+                    <p>A pop-up at the top right corner will confirm your changes are saved.</p>
+
+
+                    <div class="sectionTitle">3.3.2</div>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>
+                                        Once this change has been saved, click on the vertical 3 dots at the top next to “Stopped”. Clicking Start API will make this flow active. By making this API active, applications will now be able to use the functions that were shown in the previous sub-step.
+                                    </p>
+
+                                    <div class="step">
+                                        Click on the 3 vertical dots next to Stopped in the top right corner. Then click Start API.
+                                    </div>
+                                </td>
+                                <td>
+                                    <img class="standardImage" src="./img/3_3_2_A.png">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        In the Sharing outside of Cloud Foundry organization, you’ll notice the description: To share the API with a developer who is not a member of your Cloud Foundry organization, first create an API key and a companion API documentation link. Then send the key and the link to the developer, who can then use the corresponding page to explore the API and create an API secret (if required).</p>
+                        
+                        If the above “Require authentication via API key” was enabled, you would first need to create an API key in order to use the API Documentation link.  Because this isn’t required for this lab, all that is needed is to use the API Documentation Link (from screenshot below) for the remaining substeps.
+                        </p>
+
+                        <div class="step">
+                            Scroll to the Sharing outside of Cloud Foundry organization section and click on the API Documentation Link below (opens in a new tab).
+                        </div>
+
+                        <img class="standardImage" src="./img/3_3_2_B.png">
+
+
+                </div>
+
+
+                <!-- 3.4 -->
+                <div id="sec_3_4">
+                    <h2>
+                        <a name="3_4">3.4 Try out the flow</a>
+                    </h2>
+                    <div class="sectionTitle">3.4.1</div>
+
+                    <div class="step">
+                        Click on GET /getNearBySensors in the left side menu. Then click Try it.
+                    </div>
+
+                    <img class="standardImage" src="./img/3_4_1_A.png">
+
+                    <p>
+                        Under the Query section, notice the API input parameters lat, lon, and radius. You’ll enter the location values that you should have gotten back at the end of Step 2 from the drone #1 you specified. Enter the following values in the corresponding fields and click Send to send the request. Scroll down after to view its response.
+                    </p>
+
+                    <div class="step">
+                        Paste these values in your request:<br><br>
+                        lat: <b>32.9426934</b><br>
+                        lon: <b>-96.994849</b><br>
+                        radius: <b>500</b><br>
+                        Then click Send.
+                    </div>
+
+                    <img class="standardImage" src="./img/3_4_1_B.png">
+
+                    <p>
+                        You should see a sensor reading response below that starts with a 200 OK Response. Congratulations! You were able to test the simplified <span class="blue">getNearBySensors</span> flow that you added within App Connect. If you look closely at the JSON results contained in the response, you may notice the type of sensor and current values for this particular device.
+                    </p>
+
+                    <p>
+                        Thinking about our Remote Operations Console application, you can consider how App Connect’s flow can expose a single API (via the  /retrieveSensordata Production flow) that retrieves and parses a drone's current location, and then goes on to query the sensors in that immediate geospatial area to bring the values to the user. In the next step, you will visit and review the Remote Operations Console application's updated user interface and consider how these service connections enabled the Multi-Hybrid Cloud application with powerful functionality.
+                    </p>
+
+                    <p>
+                        In the next step, you will visit and review the Remote Operations Console application's updated user interface to understand how these service connections  enable that Multi-Hybrid Cloud application with powerful functionality.
+                    </p>
+
+
+                    <img class="standardImage" src="./img/3_4_1_C.png">
+
+                    <div class="problem question">
+                        ⚠️ My response doesn’t match the picture above / I got an error! <span class="readmore">[Click to Troubleshoot]</span>
+                    </div>
+                    <div class="answer">
+                        If you do NOT see a response similar to the one above, post a screenshot of your page in the Slack channel (link in the top right corner) along with the message, <b>"My App Connect response doesn’t match what is expected in Step 3.4.1."</b>
+                    </div>
+
+
+                </div>
+
+                <!-- Finish Step 3 -->
+                <div id="sec_finishStep3">
+                    <h2>
+                        <a name="finishStep3">Finish Step 3</a>
+                    </h2>
+                    <div class="sectionTitle">You completed Step 3! 🎉</div>
+                    <p>
+                        You successfully used App Connect to add a flow that can take drone location information and find nearby sensors in a given radius.
+                    </p>
+                    <div class="rect magentaRect single">
+                        <div class="in">
+                            Step 3 <b>Completed</b><br><br>
+                            <div class="list">
+                                ✅ Explore sensor database <br>
+                                ✅ Set up App Connect flow <br>
+                                ✅ Start the API <br>
+                                ✅ Try out the flow <br>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        In the next step, you will revisit the Remote Operations Console application and take a look at the Drone Viewer which incorporates some the services you delved into in previous steps.
+                    </p>
+                    <div class="timeline">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="step completed">
+                                        <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                                        ☑ Access IBM Cloud <br>
+                                        ☑ Access RedHat OpenShift cluster <br>
+                                        ☑ Open RedHat OpenShift web console <br>
+                                        ☑ Setting up the Access Control List (ACL) <br>
+                                        ☑ Adding a Secure Gateway destination <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 2 <b>Completed ✅</b></div><br>
+                                        ☑ Add a catalog<br>
+                                        ☑ Work with OpenAPI definitions <br>
+                                        ☑ Edit and publish API product <br>
+                                        ☑ Explore and test API <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 3 <b>Completed ✅</b></div><br>
+                                        ☑ Explore sensor database <br>
+                                        ☑ Set up App Connect flow <br>
+                                        ☑ Start the API <br>
+                                        ☑ Try out the flow <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step next">
+                                        <div class="title">Step 4 <b>Next</b></div><br>
+                                        ☑ Recap previous steps<br>
+                                        ☑ View configurations made for this lab<br>
+                                        ☑ Explore the drone viewer modal<br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="nextStepBar" onClick="moveTo('s4')">
+                        Ready? Move on to Step 4 →
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- Begin Step 4 -->
+    <div id="step4" class="main">
+        <div id="menu">
+            <a href="#step4" class="start">Step 4</a>
+            <a href="#4_1">4.1 Recap previous steps </a>
+            <a href="#4_2">4.2 View configurations made for this lab</a>
+            <a href="#4_3">4.3 Explore the drone viewer modal</a>
+            <a href="#finishStep4" class="end">Finish Step 4</a>
+        </div>
+        <div id="content">
+            <div id="main">
+
+                <div id="sec_step4">
+                    <h1>
+                        <a name="step4">Step 4: Explore Remote Operations Console with new flows</a>
+                    </h1>
+
+                    <p>
+                        In the Steps 1, 2, and 3, you learned about the three main services that were integrated with your Remote Operations Console application. These three services are Secure Gateway, API Connect, and App Connect. Let’s review each briefly:
+                    </p>
+
+                    <p>
+                        <b>Secure Gateway</b>
+                        A cloud service that enables you to establish a secure tunnel between the specific resources you want to connect. Used to enable access to GSC Drones-To-Go, a private cloud service.
+                    </p>
+
+                    <p>
+                        <b>API Connect</b>
+                        A modern, intuitive and scalable API platform that lets you create, securely expose, manage and monetize APIs across clouds. Used to create and add APIs that can request and respond with data that belongs of the GSC Drones-To-Go drones.
+                    </p>
+
+                    <p>
+                        <b>App Connect</b>
+                        An all-in-one tool for easily connecting apps, integrating data, building APIs and acting on events. Used to invoke flows that can retrieve nearby sensors based on location data of a drone.
+                    </p>
+
+
+                    <p>
+                        Over the course of this lab, you viewed a diagram that showed how the Remote Operations Console application connected with these services. It is complete – review it once more before moving on.
+                    </p>
+
+                    <img class="standardImage" src="./img/flow_3.png">
+
+                    <p>
+                        Your Remote Operations Console application is connected to the private cloud that hosts the fictional company GSC-Drones-To-Go service, which is hosted in the IBM Global Solution Center in Coppell, TX.
+                    </p>
+
+                    <p>
+                        You may remember that in Drone Lab 1, you saw a list of drones but didn’t go much further than that. In this lab, you will finally get to view what the drone sees, view telemetry data it provides, and see its relevant geospatial information.
+                    </p>
+
+                    <div class="important">
+                        It is recommended that you revisit the Drone Lab #1 instructions site now
+                        if it has been a while since you’ve completed it.
+                    </div>
+
+                    <p>
+                        If you want to recall specific information regarding the Remote Operations Console, it is recommended you read the instructions for Drone Lab 1, located here: <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>.
+                    </p>
+
+                    <p>
+                        There are two steps worth reviewing prior to finishing this lab.
+                    </p>
+
+                    <p>
+                        Step 2 of the first lab contains information regarding accessing RedHat OpenShift through IBM Cloud. While this lab has primarily used Cluster B, you will be revisiting the Cluster A you used in Drone Lab 1. If it’s been a while since you have completed the first lab, it is recommended that you look over this step, including the components related to the OpenShift web console, which will not be covered in detail in this second lab.
+                    </p>
+
+                    <p>
+                        Step 5, you may recall, of the first lab contains a breakdown of specific parts of the console application UI. This step contains clickable sections of the page that go into detail regarding the function of each widget. This second lab will not cover this content again and will go directly to a new section of the console application UI - so if it’s been a while, it is recommended that you go over this step again.
+                    </p>
+
+
+
+                    <div class="whole">
+                        <div class="rect blueRect">
+                            <div class="in">
+                                Technologies Used
+                                <br>
+                                <img src="./img/cloud.png" /><br>
+                                <img src="./img/openshift.png" />
+                            </div>
+                        </div>
+
+                        <div class="rect magentaRect">
+                            <div class="in">
+                                Your Tasks for Step 4 <br><br>
+                                <div class="list">
+                                    ✅ Recap previous steps <br>
+                                    ✅ View configurations made for this lab <br>
+                                    ✅ Explore the drone viewer modal <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="timeline">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="step completed">
+                                        <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                                        ☑ Access IBM Cloud <br>
+                                        ☑ Access RedHat OpenShift cluster <br>
+                                        ☑ Open RedHat OpenShift web console <br>
+                                        ☑ Setting up the Access Control List (ACL) <br>
+                                        ☑ Adding a Secure Gateway destination <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 2 <b>Completed ✅</b></div><br>
+                                        ☑ Add a catalog<br>
+                                        ☑ Work with OpenAPI definitions <br>
+                                        ☑ Edit and publish API product <br>
+                                        ☑ Explore and test API <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 3 <b>Completed ✅</b></div><br>
+                                        ☑ Explore sensor database <br>
+                                        ☑ Set up App Connect flow <br>
+                                        ☑ Start the API <br>
+                                        ☑ Try out the flow <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step inprogress">
+                                        <div class="title">Step 4 <b>In Progress</b></div><br>
+                                        ☑ Recap previous steps<br>
+                                        ☑ View configurations made for this lab<br>
+                                        ☑ Explore the drone viewer modal<br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+
+                <!-- 4.1 -->
+                <div id="sec_4_1">
+                    <h2>
+                        <a name="4_1">4.1 View configurations made for this lab </a>
+                    </h2>
+
+                    <div class="sectionTitle">4.1.1</div>
+
+                    <p>
+                        Now that you’ve explored the services that were used in the Remote Operations Console application, let’s revisit the application and how they were used. As mentioned in the introduction, reviewing certain instructions in Drone Lab 1 may be helpful.
+                    </p>
+
+                    <p>
+                        Navigate back to Cluster A, or mycluster-dal12-b3c.4x16, which is a part of the Resources in IBM Cloud. This should be familiar from Drone Lab 1 – launching the OpenShift web console will allow you to choose the Developer perspective, enter the Topology view, and select your project. It is critical you follow those steps correctly – not doing any of them will result in errors.
+                    </p>
+
+                    <img class="standardImage" src="./img/4_1_1_A.png" />
+
+                    <div class="step">
+                        Open <a href="https://cloud.ibm.com/resources" target="_blank">https://cloud.ibm.com/resources</a> (in a new tab).<br>Next, click mycluster-dal12-b3c.4x16 (Cluster A) under the Clusters section.<br><br>
+                        Then click on OpenShift web console.
+                    </div>
+
+                    <div class="important">
+                        These 3 steps must be completely accurately in order to not encounter issues later!
+                    </div>
+
+                    <div class="step">
+                        (1) Make sure you are in the Developer perspective (and not in the Administrator perspective) by clicking the top left dropdown under the Red Hat OpenShift Container Platform logo. <i>(You may see an error appear on screen - complete all 3 steps first).</i><br><br>
+                        (2) Click the Project dropdown and select <span class="labnameHere">YourLabName</span>-2020-lab-1.<br><br>(3) Make sure you are in the Topology view by clicking Topology in the left side menu.<br><br>
+                    </div>
+
+                    <img class="standardImage" src="./img/4_1_1_B.png">
+
+                    <p>
+                        Once you have completed the 3 steps above, your Topology view may be similar to what you see below. It is okay if your Topology is different – you will review the nodes in this view in the next sub-step.
+                    </p>
+
+                    <img class="standardImage" src="./img/4_1_1_C.png">
+
+
+
+                </div>
+
+                <!-- 4.2 -->
+                <div id="sec_4_2">
+                    <h2>
+                        <a name="4_2">4.2 View configurations made for this lab</a>
+                    </h2>
+
+                    <div class="sectionTitle">4.2.1</div>
+                    <p>
+                        In the Topology view, you may see a number of nodes that already exist – some of which are remnants of Drone Lab 1. Review the list below.
+                    </p>
+
+                    <div class="nodesText">
+                        <p>
+                            <b>Possible nodes within your Topology</b></p>
+                            
+                            <p>
+                            <b>default-sample-<span class="labnameHere">YourLabName</span></b><br>
+                            As part of the lab setup for each user, an instance of the default, unchanged remote drone console application was deployed in your OpenShift project to be used as a reference.
+                        </p> 
+
+                        <p>
+                            <b><span class="labnameHere">YourLabName</span>-2020-lab-git</b><br>
+                            In Step 1 of Drone Lab 1, you had deployed your own instance of the Remote Operations Console application with the unique changes you made.
+                        </p><br>
+
+                        <p>
+                            <b>lab2-http-forward <i>[required in order to finish this lab successfully]</i></b><br>
+                            The http-forwarder pods act as a middleman between the dronelab-ui pods and exposed endpoint for the private cluster. It takes HTTP requests from the lab2-dronelab-ui and passes them on to the private cluster.
+                        </p><br>
+
+                        <p>
+                            <b>lab2-dronelab-ui <i>[required in order to finish this lab successfully]</i> </b><br>
+                            This is an updated instance of the Remote Operations Console application UI. It will be used for this step.
+                        </p>
+                    </div>
+
+                    <div class="problem question">
+                        ⚠️ The necessary nodes are not in the Topology view of my project! <span class="readmore">[Click to Troubleshoot]</span>
+                    </div>
+                    <div class="answer">
+                        If you do NOT see the two * nodes in your project, post a screenshot of your page in the Slack channel (link in the top right corner) along with the message, <b>“I do not see the necessary Drone Lab 2 nodes in Step 4.2.1.”</b>
+                    </div>
+
+                    <img class="standardImage" src="./img/4_1_1_C.png">
+
+                    <p>
+                        Before you revisit the Remote Operations Console application, let’s take a quick look at some of the configurations that were made in Drone Lab 2.
+                    </p>
+
+                    <img class="standardImage" src="./img/4_2_1_A.png">
+
+
+                    <div class="step">
+                        Click on the lab2-http-forward node.<br>
+                        Then in the side menu under Builds, click on lab2-http-forward.
+                    </div>
+
+                    <img class="standardImage" src="./img/4_2_1_B.png">
+
+                    <br><br>
+
+                    <div class="step">
+                        Click on the Environment tab.
+                    </div>
+
+                    <p>
+                        Notice the environment (env) variables in the Environment tab for this HTTP forward node. Just as you explored Secure Gateway (SG), API Connect (API), and App Connect (APP), there are values that have already been provided that are similar in syntax to the URLs you had produced in each previous step. Since the Remote Operations Console application has already been connected to the GSC Drones-To-Go service, these values were already taken care of for you.
+                    </p>
+
+                </div>
+
+                <!-- 4.3 -->
+                <div id="sec_4_3">
+                    <h2>
+                        <a name="4_3">4.3 Explore the drone viewer modal</a>
+                    </h2>
+
+                    <div class="sectionTitle">4.3.1</div>
+
+                    <div class="step">
+                        Go back to the Topology view using the Topology link on the left side menu.
+                    </div>
+
+                    <p>
+                        Let’s revisit the Remote Console Operations application. Using the endpoint associated with the lab2-dronelab-ui node, click on the top right Open URL icon of the node to launch the site.
+                    </p>
+
+                    <table class="section_withImage">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="step">
+                                        Click on the Open URL button in the top right corner of the lab2-dronelab-ui node.
+                                    </div>
+                                </td>
+                                <td>
+                                    <img class="standardImage" src="./img/4_3_1_A.png">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+
+                    <p>
+                        This website should be familiar from Drone Lab 1 - if you would like to review each section of the Remote Operations Console, please revisit Step 5 of the Drone Lab 1 instructions site <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>.
+
+                        When you’re ready, go to the Available Drones section. Notice that the list of drones each have a status. The drones with the Available status can be connected to. These are the drones provided by the GSC Drones-To-Go service, and thanks to the services you explored earlier, this application is able to get access to these drones. Click on Connect on either of the drones to open its drone viewer modal.
+                    </p>
+
+                    <div class="step">
+                        Click Connect on any drone under the Available Drones with an Available status.
+                    </div>
+
+                    <img class="standardImage" src="./img/4_3_1_B.png">
+
+                    <p>
+                        The drone viewer modal may take a few seconds to fully load all of its components. When it’s finished, take a look below at the various parts it has and the descriptions for each. You will focus on the Location section next.
+                    </p>
+                    <img class="standardImage" src="./img/4_3_1_C.png">
+
+
+
+
+                    <div class="nodesText">
+                        <p>
+                            <b>Drone Viewer Modal</b></p>
+                            
+                            <p>
+                                <span class="tblue">Status Bar</span><br>
+                            This bar is the top where there is a back button on the left and a close button on the right. You are able to view the drone name, its connected status, and what Operation Mode you are in. Since the drone is in flight with another pilot, you are restricted to Observation Only mode.
+                        </p>
+
+                        <p>
+                            <span class="tblue">Detail Bar </span><br>
+                            The bar underneath the status includes the drone name, the current date, who the pilot is, and the serial number of the drone you are viewing.
+                        </p>
+
+                        <p>
+                            <span class="tblue">Drone Viewer</span><br>The top left quadrant of this modal contains images coming from the video feed of the drone in flight.
+                        </p>
+
+                        <p>
+                            <span class="tblue">Telemetry</span><br>The top right quadrant displays the current measurements and data from the drone in order to monitoring its situation. <br>
+                            - <b>Total Flight Time</b>: the elapsed flight measured in seconds.<br>
+                            - <b>Barometer</b>: pressure measured in mb.<br>
+                            - <b>Battery</b>: drone battery percentage.<br>
+                            - <b>Height</b>: drone height measured in cm.<br>
+                            - <b>Temp (High/Low)</b>: highest and lowest temperature measured in Celsius degree.<br>
+                            - <b>Speed (X/Y)</b>: speed in the X and Y axis measured in cm/s.<br>
+                            - <b>Acceleration (X/Y)</b>: acceleration in the X and Y axis measured in cm/s.<br>
+                            - <b>Pitch/Roll/Yaw</b>: attitude pitch, roll, and yaw measured in degree.<br>
+                            - <b>Time of Flight Distance</b>: distance the drone went in the last second in cm.<br>
+                            - <b>Latitude/Longitude</b>: location coordinates of the drone.<br><br>
+                            
+                            For more information on these values, visit <a href="https://terra-1-g.djicdn.com/2d4dce68897a46b19fc717f3576b7c6a/Tello%20%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/For%20Tello/Tello%20SDK%20Documentation%20EN_1.3_1122.pdf" target="_blank">https://terra-1-g.djicdn.com/2d4dce68897a46b19fc717f3576b7c6a/Tello%20%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/For%20Tello/Tello%20SDK%20Documentation%20EN_1.3_1122.pdf</a>.
+                        </p>
+
+                        <p>
+                            <span class="tblue">Drone Control Pad </span><br>
+                            The bottom left quadrant has controls where you can operate the drone. Currently this isn’t operational while the drone is already in flight and you are in Observation Only mode.
+                        </p>
+
+                        <p>
+                            <span class="tblue">Location</span><br>
+                            The bottom right quadrant is interactive – you are able to click on the layers on this map and view relevant geospatial markers that are close to the drone you are viewing.
+                        </p>
+
+                    </div>
+
+
+
+
+
+                    <div class="sectionTitle">4.3.2</div>
+
+                    <p>
+                        In the Location section, turn on the Sensors in the map layers. You’ll notice that there a few sensors that are near the drone itself – click on one of them to view its information. If you recall in in Step 1, you enabled access to these drones in the GSC Drones-To-Go private cloud service with Secure Gateway and in Step 2, you were able to get the drone’s location coordinates through an API you had set up, and all of the sensors could be filtered to show nearby ones using the flow you added in Step 3. The connections to these services can be observed as you look at this section.
+                    </p>
+
+                    <div class="step">
+                        Click Sensors in the Location section map layers. Then click on a sensor maker to view its information.
+                    </div>
+
+                    <img class="standardImage" src="./img/4_3_2.png">
+
+                    <p>
+                        This completes all the steps for Drone Lab 2 – congratulations! Close this modal and feel free to view the other drone you did not view to see its modal information as well.
+                    </p>
+                    
+                    <p>Please take a screenshot of the drone you liked seeing more and post it in the Slack channel with your feedback on this lab. Then move onto the next section.
+                    </p>
+
+
+
+                    <div class="finalStep">
+                        <span class="yel">Post a screenshot</span><br> of the drone viewer modal you liked more<br>
+                        in the Slack channel <a href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank">#2020gsc_ibmcloudsandbox_dronelab2</a><br> (Link also in the top right of this page)</div><br><br>
+
+                </div>
+
+                <!-- Finish Step 4 -->
+                <div id="sec_finishStep4">
+                    <h2>
+                        <a name="finishStep4">Finish Step 4</a>
+                    </h2>
+                    <div class="sectionTitle">You completed Step 4! 🎉</div>
+                    <p>
+                        You successfully explored the topology view during and after the build process and checked the status to see your changes in the application. OpenShift took the Dockerfile from your GitHub repository and used its instructions to build the application image from the current repository code. You have utilized your skills to deploy an application on the latest multi-hybrid cloud platforms.
+                    </p>
+                    <div class="rect magentaRect single">
+                        <div class="in">
+                            Step 4 <b>Completed</b><br><br>
+                            <div class="list">
+                                ✅ Recap previous steps<br>
+                                ✅ View configurations made for this lab<br>
+                                ✅ Explore the drone viewer modal<br>
+                                </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        In the next step, you will explore your new custom remote drone dashboard application, along with various industry uses cases to consider.
+                    </p>
+                    <div class="timeline">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="step completed">
+                                        <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                                        ☑ Access IBM Cloud <br>
+                                        ☑ Access RedHat OpenShift cluster <br>
+                                        ☑ Open RedHat OpenShift web console <br>
+                                        ☑ Setting up the Access Control List (ACL) <br>
+                                        ☑ Adding a Secure Gateway destination <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 2 <b>Completed ✅</b></div><br>
+                                        ☑ Add a catalog<br>
+                                        ☑ Work with OpenAPI definitions <br>
+                                        ☑ Edit and publish API product <br>
+                                        ☑ Explore and test API <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 3 <b>Completed ✅</b></div><br>
+                                        ☑ Explore sensor database <br>
+                                        ☑ Set up App Connect flow <br>
+                                        ☑ Start the API <br>
+                                        ☑ Try out the flow <br>
+                                    </td>
+                                    <td class="arrow">→</td>
+                                    <td class="step completed">
+                                        <div class="title">Step 4 <b>Completed ✅</b></div><br>
+                                        ☑ Recap previous steps<br>
+                                        ☑ View configurations made for this lab<br>
+                                        ☑ Explore the drone viewer modal<br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="nextStepBar" onClick="moveTo('sum')">
+                        Ready? Move on to Summary →
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--- Begin Summary -->
+    <div id="summary" class="main">
+        <h2>GSC Drone Lab 2: Summary</h2>
+        <div class="timeline">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="step completed">
+                            <div class="title">Step 1 <b>Completed ✅</b></div><br>
+                            ☑ Access IBM Cloud <br>
+                            ☑ Access RedHat OpenShift cluster <br>
+                            ☑ Open RedHat OpenShift web console <br>
+                            ☑ Setting up the Access Control List (ACL) <br>
+                            ☑ Adding a Secure Gateway destination <br>
+                        </td>
+                        <td class="arrow">→</td>
+                        <td class="step completed">
+                            <div class="title">Step 2 <b>Completed ✅</b></div><br>
+                            ☑ Add a catalog<br>
+                            ☑ Work with OpenAPI definitions <br>
+                            ☑ Edit and publish API product <br>
+                            ☑ Explore and test API <br>
+                        </td>
+                        <td class="arrow">→</td>
+                        <td class="step completed">
+                            <div class="title">Step 3 <b>Completed ✅</b></div><br>
+                            ☑ Explore sensor database <br>
+                            ☑ Set up App Connect flow <br>
+                            ☑ Start the API <br>
+                            ☑ Try out the flow <br>
+                        </td>
+                        <td class="arrow">→</td>
+                        <td class="step completed">
+                            <div class="title">Step 4 <b>Completed ✅</b></div><br>
+                            ☑ Recap previous steps<br>
+                            ☑ View configurations made for this lab<br>
+                            ☑ Explore the drone viewer modal<br>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <br><br>
+        <div class="block">
+            <div class="final_left">
+                <img class="sideImage" src="./img/prodflow.png" />
+                <br>
+                <a href="./img/diagram.png" target="_blank">View full size diagram</a>
+
+            </div>
+            <div class="final_right">
+                <p><b>Let’s review what we accomplished in this lab overall:</b> </p>
+
+                <p>
+                    Let’s review what we accomplished in this lab overall:
+                </p>
+
+                <p>
+                    First, you set up a Secure Gateway connection in order to enable access to drones that belong to the private cloud GSC-Drones-To-Go service.
+                </p>
+
+                <p>
+                    Next, you added API definition with API Connect so that you can get information from the drones, including getting back its current location.
+                </p>
+
+                <p>
+                    Then, you created a flow using App Connect to use that drone location information to get back a list of sensors that are close to the drone’s location.
+                </p>
+
+                <p>
+                    Lastly, you explored the Remote Operations Console application’s drone viewer modal, and got to see the different components associated with a drone that were enabled through the use of the above services.
+                </p>
+
+                <p>
+                    The takeaway of this lab is a better understanding of how various IBM services can be easily connected to a cloud application in order to augment its security, functionality, and connectivity.
+                </p>
+
+            </div>
+
+            <hr />
+            <br><br>
+
+            <div class="centerImg">
+                <img src="./img/flow_3.png" style="width: 70%">
+            </div>
+
+
+
+
+        </div>
+        <div class="mid">
+            <hr />
+            Thank you for taking time to complete <b>GSC Drone Lab 2</b>. <span class="blue">Did you enjoy this lab?</span> Please leave a comment in this lab’s <span class="purple">Slack channel</span> (link in the top right) and let us know!<br><br> If you found this lab to be useful, remember that this Lab is the <b>second</b> a series of <b>Hands-on Labs</b>. Please look forward to more of these labs that will expand on the scenario and functionality that you completed today.<br><br>
+            <table class="futureLabs">
+                <tbody>
+                    <tr class="header">
+                        <td>Lab Title</td>
+                        <td>Lab Description</td>
+                    </tr>
+                    <tr class="completed">
+                        <td>
+                            ✅ <b>Lab 1</b> Completed
+                        </td>
+                        <td>
+                            Building the drone application on a Multi-Hybrid cloud platform and using all the associated coding tools
+                        </td>
+                    </tr>
+                    <tr class="completed">
+                        <td>
+                            ✅ <b>Lab 2</b> Completed
+                        </td>
+                        <td>
+                            Validate connectivity to resources in back-end private cloud, and test interaction with drone in remote private cloud location via app running in multi-hybrid cloud.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Lab 3</b>
+                        </td>
+                        <td>
+                            Apply visual recognition to detect/count vehicles and sensor API to monitor water/flooding in streams in order to reroute traffic and barricade unsafe conditions, in a specific geographic location.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mid">
+            The GSC Drone Lab 2 was created by the <b>IBM Global Solution Center Public Market</b> team in Dallas, TX.<br>
+            Thank you to Romelia Flores, Catherine Chess and the SBaaS team, and Scott Knupp for their support on this lab.<br><br>
+            For more information on the <b>Global Solution Center</b>, what we do, and our pre-sales technical support for industry solutions, <br>
+            visit <a href="https://ibm.biz/gscdallas" target="_blank">https://ibm.biz/gscdallas</a>.<br> <br>
+        </div>
+    </div>
+    </div>
+    <!--- End Lab-->
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
