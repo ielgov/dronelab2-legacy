@@ -27,6 +27,7 @@ table {
   font-size: 1em;
   display: inline-block;
   border-radius: 8px;
+  height: 50px;
 }
 
 #navbar a {
@@ -36,18 +37,32 @@ table {
 #navbar .start {
   display: inline-block;
   margin-right: 15px;
-  padding: 10px;
+  padding: 13px;
 }
 
 #navbar .item {
   display: inline-block;
-  margin-right: 15px;
-  padding: 10px;
   background-color: none;
+  padding: 13px;
+  cursor: pointer;
+}
+
+#navbar .itemlink {
+  display: inline-block;
+  background-color: none;
+  cursor: pointer;
 }
 
 #navbar .item:hover {
   background-color: #5B27AA !important;
+}
+
+#navbar #links_support {
+  float: right;
+}
+
+#navbar #links_support .link {
+  display: inline-block;
 }
 
 /*  #navbar .selected {
@@ -55,11 +70,13 @@ table {
 }*/
 
 #navbar .out {
-  font-size: .8em;
+  font-size: .7em;
   float: right;
   color: #fff;
   margin-right: 0px;
   border-radius: 8px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 #navbar .out:hover {
@@ -1220,10 +1237,19 @@ h2 {
 /* Mobile Phones Media Query */
 @media only screen and (max-width: 1200px) {
   #navbar {
+    background-color: #2c3e50;
     width: 100%;
     color: #fff;
     font-size: 0.8em;
     display: inline-block;
+    margin-bottom: 20px;
+    height:auto;
+  }
+  
+  #navbar .start {
+    text-align: center;
+    display: block;
+    padding: 0px;
   }
 
   #navbar .item {
@@ -1232,6 +1258,16 @@ h2 {
     padding: 2px;
   }
 
+  #navbar #links_support {
+    width: 100%;
+  }
+
+  #navbar #links_support table {
+    width: 100%;
+    background-color: #424242;
+    color: #000;
+  }
+  
   #menu {
     background-color: lightgray;
     float: left;
