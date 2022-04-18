@@ -86,16 +86,16 @@
                         <img src="./img/labOverview2.png" class="bigImage" />
                     </div>
                     <div class="rightHalf">
-                        <p>The purpose of this lab is to enable connection from the Remote Operations Console you customized and deployed in Lab 1, to an on-prem private cloud service – provided by a fictional company, "IEL Drones-To-Go". This service was created to allow a user to interact with drones located at the IEL (Industry Engineering Lab) in Coppell, TX. In order for this connection to be enabled securely and deliver the necessary functionality, you will need to <b>setup a few IBM Cloud service configurations</b>.</p>
+                        <p>The purpose of this lab is to enable connection from the Remote Operations Console you customized and deployed in Lab 1, to an on-prem private cloud service – provided by a fictional company, "GSC Drones-To-Go". This service was created to allow a user to interact with drones located at the IEL (Industry Engineering Lab) in Coppell, TX. In order for this connection to be enabled securely and deliver the necessary functionality, you will need to <b>setup a few IBM Cloud service configurations</b>.</p>
 
                         <table class="impTable">
                             <tbody>
                                 <tr>
                                     <td>
-                                        Use <b>Secure Gateway</b> to <span class="magenta">allow access</span> to the drone controller service, which is located on a private back-end OCP (OpenShift Container Platform) cluster at the Industry Engineering Lab in Coppell, TX. In this lab, we’ll refer to this private drone service as “IEL Drones-To-Go”.
+                                        Use <b>Secure Gateway</b> to <span class="magenta">allow access</span> to the drone controller service, which is located on a private back-end OCP (OpenShift Container Platform) cluster at the Industry Engineering Lab in Coppell, TX. In this lab, we’ll refer to this private drone service as “GSC Drones-To-Go”.
                                     </td>
                                     <td>
-                                        Use <b>API Connect</b> to <span class="magenta">expose APIs</span> (for example, <span class="tblue">getLatLng</span>, or, <i><span class="tblue">show me the latitude and longitude coordinates of the drone</span></i>) so that you are able to communicate with the IEL Drones-To-Go service securely and efficiently.
+                                        Use <b>API Connect</b> to <span class="magenta">expose APIs</span> (for example, <span class="tblue">getLatLng</span>, or, <i><span class="tblue">show me the latitude and longitude coordinates of the drone</span></i>) so that you are able to communicate with the GSC Drones-To-Go service securely and efficiently.
                                     </td>
                                     <td>
                                         Use <b>App Connect</b> to <span class="magenta">connect to another service</ that provides geospatial tools for nearby available sensors based on information provided via APIs. </td> </tr> </tbody> </table> <div class="block">
@@ -302,7 +302,7 @@
 
                                     <p>1. the Operators that use the Remote Drone Operations Console application, and,</p>
 
-                                    <p>2. an organization, “IEL Drones-To-Go”, which has private on-prem resource in Coppell, TX that allows piloting and observing of local drones.</p>
+                                    <p>2. an organization, “GSC Drones-To-Go”, which has private on-prem resource in Coppell, TX that allows piloting and observing of local drones.</p>
 
                                 </td>
                                 <td width="70%" style="text-align: center">
@@ -314,15 +314,15 @@
                         </tbody>
                     </table>
 
-                    <p>IEL Drones-To-Go wants users like the Operators to access their drone service, wants to easily manage their access, and wants to make sure this connection is done securely so they aren’t compromised in any way.</p>
+                    <p>GSC Drones-To-Go wants users like the Operators to access their drone service, wants to easily manage their access, and wants to make sure this connection is done securely so they aren’t compromised in any way.</p>
 
-                    <p>The Operators, owners and users of the Remote Drone Operations Console, want to connect the service that IEL Drones-To-Go provides. </p>
+                    <p>The Operators, owners and users of the Remote Drone Operations Console, want to connect the service that GSC Drones-To-Go provides. </p>
 
-                    <p>You will explore how IBM® Secure Gateway can help enable the connection between the Public Safety Situational Awareness Operator users in one cloud environment and the IEL Drones-To-Go services that are  running in another cloud environment. By deploying the lightweight and natively installed Secure Gateway Client, a secure, persistent connection can be established between your environment and the cloud. You can imagine the Secure Gateway Client is like an on-prem bouncer, checking who wants access based on their list. </p>
+                    <p>You will explore how IBM® Secure Gateway can help enable the connection between the Public Safety Situational Awareness Operator users in one cloud environment and the GSC Drones-To-Go services that are  running in another cloud environment. By deploying the lightweight and natively installed Secure Gateway Client, a secure, persistent connection can be established between your environment and the cloud. You can imagine the Secure Gateway Client is like an on-prem bouncer, checking who wants access based on their list. </p>
 
                     <p>Secure Gateway allows the safe connection of applications and resources regardless of their location. This is important - rather than bridging your environments at the network level like a traditional VPN, Secure Gateway provides granular resource control operating with the principle of least privilege as its core tenet.</p>
 
-                    <p>In this step of the lab, you learn about how to use Secure Gateway to bridge connection between the Remote Drone Operations Console and the on-prem resource at IEL Drones-To-Go. In later steps, you will continue to get more access to the IEL Drone-To-Go service, including accessing APIs and even invoking related flows. </p>
+                    <p>In this step of the lab, you learn about how to use Secure Gateway to bridge connection between the Remote Drone Operations Console and the on-prem resource at GSC Drones-To-Go. In later steps, you will continue to get more access to the IEL Drone-To-Go service, including accessing APIs and even invoking related flows. </p>
 
                     <img src="./img/flow_1.png" class="standardImage" />
 
@@ -1006,7 +1006,7 @@
                         </h2>
                         <div class="sectionTitle">You completed Step 1! 🎉</div>
                         <p>
-                            You have successfully setup Secure Gateway to allow connectivity to the IEL Drones-To-Go controller application running in Cluster B within the simulated private cloud.  This exemplifies the process that was used to connect the Remote Drone Operations Console to the on-prem IEL Drones-To-Go resources.
+                            You have successfully setup Secure Gateway to allow connectivity to the GSC Drones-To-Go controller application running in Cluster B within the simulated private cloud.  This exemplifies the process that was used to connect the Remote Drone Operations Console to the on-prem GSC Drones-To-Go resources.
                         </p>
                         <div class="rect magentaRect single">
                             <div class="in">
@@ -1695,7 +1695,7 @@
                     </h2>
                     <div class="sectionTitle">You completed Step 2! 🎉</div>
                     <p>
-                        You successfully used API Connect to expose APIs in the IEL Drones-To-Go service by creating a catalog, importing a YAML file with API definitions, made changes, republished, and tested out the API within the API Connect Explore tool.
+                        You successfully used API Connect to expose APIs in the GSC Drones-To-Go service by creating a catalog, importing a YAML file with API definitions, made changes, republished, and tested out the API within the API Connect Explore tool.
                     </p>
                     <div class="rect magentaRect single">
                         <div class="in">
@@ -2309,12 +2309,12 @@
 
                     <p>
                         <b>Secure Gateway</b>
-                        A cloud service that enables you to establish a secure tunnel between the specific resources you want to connect. Used to enable access to IEL Drones-To-Go, a private cloud service.
+                        A cloud service that enables you to establish a secure tunnel between the specific resources you want to connect. Used to enable access to GSC Drones-To-Go, a private cloud service.
                     </p>
 
                     <p>
                         <b>API Connect</b>
-                        A modern, intuitive and scalable API platform that lets you create, securely expose, manage and monetize APIs across clouds. Used to create and add APIs that can request and respond with data that belongs of the IEL Drones-To-Go drones.
+                        A modern, intuitive and scalable API platform that lets you create, securely expose, manage and monetize APIs across clouds. Used to create and add APIs that can request and respond with data that belongs of the GSC Drones-To-Go drones.
                     </p>
 
                     <p>
@@ -2535,7 +2535,7 @@
                     </div>
 
                     <p>
-                        Notice the environment (env) variables in the Environment tab for this HTTP forward node. Just as you explored Secure Gateway (SG), API Connect (API), and App Connect (APP), there are values that have already been provided that are similar in syntax to the URLs you had produced in each previous step. Since the Remote Operations Console application has already been connected to the IEL Drones-To-Go service, these values were already taken care of for you.
+                        Notice the environment (env) variables in the Environment tab for this HTTP forward node. Just as you explored Secure Gateway (SG), API Connect (API), and App Connect (APP), there are values that have already been provided that are similar in syntax to the URLs you had produced in each previous step. Since the Remote Operations Console application has already been connected to the GSC Drones-To-Go service, these values were already taken care of for you.
                     </p>
 
                 </div>
@@ -2578,7 +2578,7 @@
                     <p>
                         This website should be familiar from Drone Lab 1 - if you would like to review each section of the Remote Operations Console, please revisit Step 5 of the Drone Lab 1 instructions site <a href="https://ielgov.github.io/dronelab1" target="_blank">https://ielgov.github.io/dronelab1</a>.
 
-                        When you’re ready, go to the Available Drones section. Notice that the list of drones each have a status. The drones with the Available status can be connected to. These are the drones provided by the IEL Drones-To-Go service, and thanks to the services you explored earlier, this application is able to get access to these drones. Click on Connect on either of the drones to open its drone viewer modal.
+                        When you’re ready, go to the Available Drones section. Notice that the list of drones each have a status. The drones with the Available status can be connected to. These are the drones provided by the GSC Drones-To-Go service, and thanks to the services you explored earlier, this application is able to get access to these drones. Click on Connect on either of the drones to open its drone viewer modal.
                     </p>
 
                     <div class="step">
@@ -2648,7 +2648,7 @@
                     <div class="sectionTitle">4.3.2</div>
 
                     <p>
-                        In the Location section, turn on the Sensors in the map layers. You’ll notice that there a few sensors that are near the drone itself – click on one of them to view its information. If you recall in in Step 1, you enabled access to these drones in the IEL Drones-To-Go private cloud service with Secure Gateway and in Step 2, you were able to get the drone’s location coordinates through an API you had set up, and all of the sensors could be filtered to show nearby ones using the flow you added in Step 3. The connections to these services can be observed as you look at this section.
+                        In the Location section, turn on the Sensors in the map layers. You’ll notice that there a few sensors that are near the drone itself – click on one of them to view its information. If you recall in in Step 1, you enabled access to these drones in the GSC Drones-To-Go private cloud service with Secure Gateway and in Step 2, you were able to get the drone’s location coordinates through an API you had set up, and all of the sensors could be filtered to show nearby ones using the flow you added in Step 3. The connections to these services can be observed as you look at this section.
                     </p>
 
                     <div class="step">
