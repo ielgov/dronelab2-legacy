@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>GSC Drone Lab 2 - Instructions</title>
+    <title>IEL Drone Lab 2 - Instructions</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&family=IBM+Plex+Sans+Condensed:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&family=IBM+Plex+Serif:ital@0;1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -11,7 +11,7 @@
 <body>
     <a id="top"></a>
     <div id="navbar">
-        <span class="start" onClick="toggleOptions()">GSC Drone Lab 2</span>
+        <span class="start" onClick="toggleOptions()">IEL Drone Lab 2</span>
         <span id="nb" class="item" onClick="moveTo('begin')" style="background-color: #5B27AA;">Begin Lab</span>
         <span id="np" class="item" onClick="moveTo('prelim')">Preliminary Steps</span>
         <span id="n1" class="item" onClick="moveTo('s1')">Step 1</span>
@@ -22,9 +22,6 @@
         <div id="links_support">
             <table>
                 <tbody>
-                    <tr>
-                        <td><a class="link" href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank"><span class="out itemlink"> <img src="./img/slack.png" />&nbsp;&nbsp;Lab Slack channel - post questions & more ⇒</span></a></td>
-                    </tr>
                     <tr>
                         <td><a class="link" href="mailto:gscgov@us.ibm.com?cc=edgingtn@us.ibm.com, sjchrist@us.ibm.com, mariados@us.ibm.com&subject=Requesting%20Support%20-%20IEL%20Drone%20Lab2%20(Satellite)&body=(Your%20message%20here)"><span class="out itemlink">Not an IBMer? Email gscgov@us.ibm.com for support</span></a></td>
                     </tr>
@@ -38,7 +35,7 @@
         <div id="beginlab" class="main" style="display:block;">
             <div class="block">
                 <div class="leftHalf">
-                    <h1>GSC Drone Lab 2: Introduction</h1>
+                    <h1>IEL Drone Lab 2: Introduction</h1>
                     <span class="userNote">&#9734 For this lab, a lab user name and Secure Gateway number was created for you. This name was set to <span class="labnameHere">YourLabName</span> and this number was set to <span class="sg_numberHere">unassigned</span>. This information will be addressed and referenced later in the lab.</span>
 
                     <p>
@@ -46,11 +43,11 @@
                     </p>
 
                     <p>
-                        In the previous lab, you deployed a customized, containerized application onto OpenShift. <span class="orange">If you have not completed the previous lab, please return to the SBaaS Catalog (<a href="http://ibm.biz/sbaas-app" target="_blank">http://ibm.biz/sbaas-app</a>) and request access to Remote Drone Console Application Hands-on Lab #1.</span>
+                        In the previous lab, you deployed a customized, containerized application onto OpenShift. <span class="orange">If you have not completed the previous lab, please return to the Technology Zone  (<a href="https://techzone.ibm.com/collection/dronelab1" target="_blank">https://techzone.ibm.com/collection/dronelab1</a>) and request access to Remote Drone Console Application Hands-on Lab #1.</span>
                     </p>
 
                     <p>
-                        If it has been a significant amount of time since you have completed, it is <b>recommended</b> that you review the guide for Drone Lab 1, located here: <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>. Additionally, feel free to use the Drone Lab 1 guide <b>anytime</b> for your reference.</p>
+                        If it has been a significant amount of time since you have completed, it is <b>recommended</b> that you review the guide for Drone Lab 1, located here: <a href="https://ielgov.github.io/dronelab1" target="_blank">https://ielgov.github.io/dronelab1</a>. Additionally, feel free to use the Drone Lab 1 guide <b>anytime</b> for your reference.</p>
 
                     <p>
                         Please confirm below that you have completed the previous lab and are ready to start this lab.
@@ -89,20 +86,20 @@
                         <img src="./img/labOverview2.png" class="bigImage" />
                     </div>
                     <div class="rightHalf">
-                        <p>The purpose of this lab is to enable connection from the Remote Operations Console you customized and deployed in Lab 1, to an on-prem private cloud service – provided by a fictional company, "GSC Drones-To-Go". This service was created to allow a user to interact with drones located at the IBM GSC (Global Solution Center) in Coppell, TX. In order for this connection to be enabled securely and deliver the necessary functionality, you will need to <b>setup a few IBM Cloud service configurations</b>.</p>
+                        <p>The purpose of this lab is to enable connection from the Remote Operations Console you customized and deployed in Lab 1, to an on-prem private cloud service – provided by a fictional company, "IEL Drones-To-Go". This service was created to allow a user to interact with drones located at the IEL (Industry Engineering Lab) in Coppell, TX. In order for this connection to be enabled securely and deliver the necessary functionality, you will need to <b>setup a few IBM Cloud service configurations</b>.</p>
 
                         <table class="impTable">
                             <tbody>
                                 <tr>
                                     <td>
-                                        Use <b>Secure Gateway</b> to <span class="magenta">allow access</span> to the drone controller service, which is located on a private back-end OCP (OpenShift Container Platform) cluster at the Global Solution Center (GSC) in Dallas, TX. In this lab, we’ll refer to this private drone service as “GSC Drones-To-Go”.
+                                        Use <b>Secure Gateway</b> to <span class="magenta">allow access</span> to the drone controller service, which is located on a private back-end OCP (OpenShift Container Platform) cluster at the Industry Engineering Lab in Coppell, TX. In this lab, we’ll refer to this private drone service as “IEL Drones-To-Go”.
                                     </td>
                                     <td>
-                                        Use <b>API Connect</b> to <span class="magenta">expose APIs</span> (for example, <span class="tblue">getLatLng</span>, or, <i><span class="tblue">show me the latitude and longitude coordinates of the drone</span></i>) so that you are able to communicate with the GSC Drones-To-Go service securely and efficiently.
+                                        Use <b>API Connect</b> to <span class="magenta">expose APIs</span> (for example, <span class="tblue">getLatLng</span>, or, <i><span class="tblue">show me the latitude and longitude coordinates of the drone</span></i>) so that you are able to communicate with the IEL Drones-To-Go service securely and efficiently.
                                     </td>
                                     <td>
                                         Use <b>App Connect</b> to <span class="magenta">connect to another service</ that provides geospatial tools for nearby available sensors based on information provided via APIs. </td> </tr> </tbody> </table> <div class="block">
-                                            <b>Something to consider</b>: How is your Remote Operations Console, a public SBaaS Cloud Application, able to connect to a “private cloud” resource, like a drone controller/viewer service?
+                                            <b>Something to consider</b>: How is your Remote Operations Console, a public Cloud Application, able to connect to a “private cloud” resource, like a drone controller/viewer service?
                     </div>
                 </div>
             </div>
@@ -118,37 +115,37 @@
             <p>
                 <b>Created Two Lab Environment Flows </b><br>
 
-                As depicted above, a Production Flow was created to support new functionality that illustrates Hybrid Cloud integration between the Remote Drone Console application and the GSC private Cloud. An additional Lab Flow was created to facilitate the hands-on activities with IBM’s most common integration services in a Hybrid Multicloud context, which each user will encounter in Lab Steps 1-3.
+                As depicted above, a Production Flow was created to support new functionality that illustrates Hybrid Cloud integration between the Remote Drone Console application and the IEL private Cloud. An additional Lab Flow was created to facilitate the hands-on activities with IBM’s most common integration services in a Hybrid Multicloud context, which each user will encounter in Lab Steps 1-3.
             </p>
 
             <p>
-                <b>Created Drone Controller services in GSC Private Cloud </b><br>
+                <b>Created Drone Controller services in IEL Private Cloud </b><br>
                 
-                The drone controller application is an integral part of this lab – it interacts with physical and virtual resources at the GSC (Global Solution Center in Coppell, TX) and its private cloud, along with providing API endpoints that can orchestrate the appropriate functionality. This application, along with a drone activity database, was deployed within the GSC private cloud OpenShift Cloud Platform (OCP), which is used for the lab’s Production Flow.
+                The drone controller application is an integral part of this lab – it interacts with physical and virtual resources at the IEL (Industry Engineering Lab in Coppell, TX) and its private cloud, along with providing API endpoints that can orchestrate the appropriate functionality. This application, along with a drone activity database, was deployed within the IEL private cloud OpenShift Cloud Platform (OCP), which is used for the lab’s Production Flow.
             </p>
 
             <p>
-                <b>Provisioned a second OCP cluster in the IBM Cloud SBaaS environment</b><br>
+                <b>Provisioned a second OCP cluster in the IBM Cloud environment</b><br>
 
-                The initial IBM Cloud SBaaS organization OCP cluster where the Remote Drone Console application was deployed from Lab 1 acts as the public cloud, while a new OCP cluster that will be in focus during this lab in Steps 1-3 acts as a simulated private cloud. Even though this additional cluster is still in the IBM Cloud SBaaS environment, it was created to enable each lab taker to have visibility into the application artifacts and configurations that were deployed so that they can perform hands-on activities.
+                The initial IBM Cloud organization OCP cluster where the Remote Drone Console application was deployed from Lab 1 acts as the public cloud, while a new OCP cluster that will be in focus during this lab in Steps 1-3 acts as a simulated private cloud. Even though this additional cluster is still in the IBM Cloud environment, it was created to enable each lab taker to have visibility into the application artifacts and configurations that were deployed so that they can perform hands-on activities.
             </p>
 
             <p>
                 <b>Provisioned Cloud services* </b><br>
 
-                Several IBM Cloud services were prepared and provisioned for lab users within the IBM Cloud SBaaS organization, including Secure Gateway, API Connect, App Connect, and IBM Cloudant.
+                Several IBM Cloud services were prepared and provisioned for lab users within the IBM Cloud organization, including Secure Gateway, API Connect, App Connect, and IBM Cloudant.
             </p>
 
             <p>
                 <b>Deployed a Secure Gateway Client in both target Environments</b><br>
 
-                To achieve the necessary Secure Gateway service configuration, a Secure Gateway Client was deployed within a project in the second IBM Cloud SBaaS cluster to facilitate hands-on exploration that will be used in Lab Steps 1-3. In addition, a Secure Gateway Client was also deployed within the GSC private cloud environment to enable the IBM Cloud SBaaS Remote Drone Console application functionality that will be leveraged as part of the lab’s Production Flow. In each case, preliminary configuration was performed to establish connection between the Secure Gateway Client in each Flow’s environment and the Secure Gateway Service running at the IBM Cloud SBaaS organization level.
+                To achieve the necessary Secure Gateway service configuration, a Secure Gateway Client was deployed within a project in the second IBM Cloud cluster to facilitate hands-on exploration that will be used in Lab Steps 1-3. In addition, a Secure Gateway Client was also deployed within the IEL private cloud environment to enable the IBM Cloud Remote Drone Console application functionality that will be leveraged as part of the lab’s Production Flow. In each case, preliminary configuration was performed to establish connection between the Secure Gateway Client in each Flow’s environment and the Secure Gateway Service running at the IBM Cloud organization level.
             </p>
 
             <p>
-                <b>Deployed a project and artifacts for each lab user in the IBM Cloud SBaaS  </b><br>
+                <b>Deployed a project and artifacts for each lab user in the IBM Cloud </b><br>
 
-                A project with a simplified Drone Controller application and a stubbed version of the drone database was deployed for each lab user within the second IBM Cloud SBaaS OCP cluster. In addition, YAML files were provided to allow each user to walk through the setup of API Connect and App Connect services.
+                A project with a simplified Drone Controller application and a stubbed version of the drone database was deployed for each lab user within the second IBM Cloud OCP cluster. In addition, YAML files were provided to allow each user to walk through the setup of API Connect and App Connect services.
             </p>
 
 
@@ -173,46 +170,6 @@
     </div>
     <!--- Preliminary Steps -->
     <div id="prelim" class="main">
-        <div class="block">
-            <div class="leftHalf">
-                <div class="slackInfo">
-                    <h2>
-                        <a name="slack">Slack Communication</a>
-                    </h2>
-
-                    <p>
-                        Communication (such as feedback, questions, comments, and help) is done through a Slack channel dedicated to this lab. Before you begin the lab, it is encouraged that you confirm you have access to the channel
-                        <span class="purple">#2020gsc_ibmcloudsandbox_dronelab2</span>, located in the <b>IBM Sales</b> workspace (you may need to enter <b><span class="tblue">ibm-sales</span></b>.slack.com first).
-                    </p>
-                    <p>
-                        Go to
-                        <span class="blue">
-                            <a href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank">
-                                https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y
-                            </a>
-                        </span>
-                        to verify you have access to this channel.
-                    </p>
-                </div>
-            </div>
-            <div class="qHalf">
-                <div class="question">
-                    👈 When I click that link, I do not see a Slack channel.
-                    <span class="readmore">[Click to Read Solution]</span>
-                </div>
-                <div class="answer">
-                    You will encounter issues if you do not have access to the
-                    <b>IBM Sales workspace</b>. <br><br>
-
-                    Go to <a href="https://ibm-sales.slack.com" target="_blank">https://ibm-sales.slack.com</a> - if you do not see a Slack channel at all, you may need to go
-                    <a href="https://ibm.enterprise.slack.com/signin/find-workspaces" target="_blank">https://ibm.enterprise.slack.com/signin/find-workspaces</a> and search for <b>“IBM Sales”</b>. This workspace has over 34,000 members and has a
-                    handshake icon with a blue background. Join this workspace and you will be granted access.
-                    <b>You may need to scroll down several times to find it.</b>
-                    <br><br>
-                    Once you click to join the IBM Sales workspace, try visiting <a href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank">https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y</a> again.
-                </div>
-            </div>
-        </div>
 
         <div class="block">
             <h2> Preliminary Steps </h2>
@@ -235,7 +192,7 @@
 
 
                 <p>
-                    <b>After you requested this lab through the SBaaS, you should have received an email </b> <i>(“Thank you for your interest in the IBM Sandbox as a Service Hands—on Lab 2...”)</i> containing the <b>link to this instructions page.</b>
+                    <b>After you requested this lab, you should have received an email </b> containing the <b>link to this instructions page.</b>
                 </p>
 
                 <p>
@@ -258,7 +215,7 @@
                     <p><b>Your Secure Gateway number</b>: <span class="sg_numberHere">unassigned</span></p>
                 </div><br>
                 <div class="subImpInfo">
-                    Referencing the above, if your Lab Name is <b>"YourLabName"</b> and/or your Secure Gateway number is <b>"unassigned"</b>, please use the <b>Slack channel</b> link located in the <b>top right corner</b> of this page and post <b>"I was not assigned a lab name/Secure Gateway number for Drone Lab 2."</b>
+                    Referencing the above, if your Lab Name is <b>"YourLabName"</b> and/or your Secure Gateway number is <b>"unassigned"</b>, please use the <b>email</b> link located in the <b>top right corner</b> of this page and send an email to gscgov@us.ibm.com with the subject <b>"I was not assigned a lab name/Secure Gateway number for Drone Lab 2."</b>
                 </div>
 
             </div>
@@ -330,7 +287,7 @@
                         <a name="step1">1. Enable access to a service with Secure Gateway</a>
                     </h1>
                     <p>
-                        In this step, the first few instructions may seem familiar – you should be comfortable with navigating to and within an OpenShift web console in the IBM SBaaS organization cluster based on your completion of the first Drone lab. As a reminder, you can always reference the first lab’s instructions guide here <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>. In this lab, you will focus on a different cluster: one that emulates a real-life organization that has its own private service.</p>
+                        In this step, the first few instructions may seem familiar – you should be comfortable with navigating to and within an OpenShift web console in the IBM organization cluster based on your completion of the first Drone lab. As a reminder, you can always reference the first lab’s instructions guide here <a href="https://ielgov.github.io/dronelab1" target="_blank">https://ielgov.github.io/dronelab1</a>. In this lab, you will focus on a different cluster: one that emulates a real-life organization that has its own private service.</p>
 
                     <p>
                         The purpose of this setup was to demonstrate the technology and value behind connecting various applications and services between different clusters, even if they are public or private. In a typical case, an application may want to access services that are located in a private cloud. With the inherit nature of private cloud, it may seem problematic to introduce communication with any public cloud application. </p>
@@ -343,9 +300,9 @@
                                 <td width="30%">
                                     <p>Let’s take a moment to review some concepts you will be delving into in the next few steps. Consider two parties involved: </p>
 
-                                    <p>1. the SBaaS Operators that use the Remote Drone Operations Console application, and,</p>
+                                    <p>1. the Operators that use the Remote Drone Operations Console application, and,</p>
 
-                                    <p>2. an organization, “GSC Drones-To-Go”, which has private on-prem resource in Coppell, TX that allows piloting and observing of local drones.</p>
+                                    <p>2. an organization, “IEL Drones-To-Go”, which has private on-prem resource in Coppell, TX that allows piloting and observing of local drones.</p>
 
                                 </td>
                                 <td width="70%" style="text-align: center">
@@ -357,15 +314,15 @@
                         </tbody>
                     </table>
 
-                    <p>GSC Drones-To-Go wants users like the SBaaS Operators to access their drone service, wants to easily manage their access, and wants to make sure this connection is done securely so they aren’t compromised in any way.</p>
+                    <p>IEL Drones-To-Go wants users like the Operators to access their drone service, wants to easily manage their access, and wants to make sure this connection is done securely so they aren’t compromised in any way.</p>
 
-                    <p>The SBaaS Operators, owners and users of the Remote Drone Operations Console, want to connect the service that GSC Drones-To-Go provides. </p>
+                    <p>The Operators, owners and users of the Remote Drone Operations Console, want to connect the service that IEL Drones-To-Go provides. </p>
 
-                    <p>You will explore how IBM® Secure Gateway can help enable the connection between the Public Safety Situational Awareness Operator users in one cloud environment and the GSC Drones-To-Go services that are  running in another cloud environment. By deploying the lightweight and natively installed Secure Gateway Client, a secure, persistent connection can be established between your environment and the cloud. You can imagine the Secure Gateway Client is like an on-prem bouncer, checking who wants access based on their list. </p>
+                    <p>You will explore how IBM® Secure Gateway can help enable the connection between the Public Safety Situational Awareness Operator users in one cloud environment and the IEL Drones-To-Go services that are  running in another cloud environment. By deploying the lightweight and natively installed Secure Gateway Client, a secure, persistent connection can be established between your environment and the cloud. You can imagine the Secure Gateway Client is like an on-prem bouncer, checking who wants access based on their list. </p>
 
                     <p>Secure Gateway allows the safe connection of applications and resources regardless of their location. This is important - rather than bridging your environments at the network level like a traditional VPN, Secure Gateway provides granular resource control operating with the principle of least privilege as its core tenet.</p>
 
-                    <p>In this step of the lab, you learn about how to use Secure Gateway to bridge connection between the Remote Drone Operations Console and the on-prem resource at GSC Drones-To-Go. In later steps, you will continue to get more access to the GSC Drone-To-Go service, including accessing APIs and even invoking related flows. </p>
+                    <p>In this step of the lab, you learn about how to use Secure Gateway to bridge connection between the Remote Drone Operations Console and the on-prem resource at IEL Drones-To-Go. In later steps, you will continue to get more access to the IEL Drone-To-Go service, including accessing APIs and even invoking related flows. </p>
 
                     <img src="./img/flow_1.png" class="standardImage" />
 
@@ -618,7 +575,7 @@
                     <div class="answer">
                         <img src="./img/1_3_1_C.png" class="sideImage_left_big" /><br><br>If you see "<b>Restricted Access: You don’t have access to this section due to cluster policy</b>" along with the error details, <i>"deploymentconfigs.apps.openshift.io is forbidden: User “IAM#...” cannot list resource “deploymentconfigs” in API group “apps.openshift.io" in the namespace “default”</i>, make sure to select the <b>developer perspective</b> and that you are in the <b>correct project</b>. Your project should be "<b><span class="labnameHere">YourLabName</span>-2020-lab-2</b>".
 
-                        <p>If you do <b>NOT</b> see a page similar to the one below, post a screenshot of your page in the <b>Slack</b> channel (link in the top right corner) along with the message, <b>"My Topology view in OpenShift doesn't match the screenshot in Step 1.3.1."</b></p>
+                        <p>If you do <b>NOT</b> see a page similar to the one below, email a screenshot of your page to gscgov@us.ibm.com (link in the top right corner) along with the message, <b>"My Topology view in OpenShift doesn't match the screenshot in Step 1.3.1."</b></p>
 
                     </div>
 
@@ -743,7 +700,7 @@
 
                     <img class="standardImage" src="./img/1_4_4_B.png">
 
-                    <p>Click on the Project dropdown to select the project where your Secure Gateway Client resides. Keep in mind that this will be different for various lab users depending on the group number you were assigned to in Step 1.4.3. In this example, the instructions lab user was assigned to group #1, so the project they chose was secure-gateway-client1. It is critical that you select the secure-gateway-client project that contains the group # you were assigned – otherwise, you will encounter errors. As a reminder, your Secure Gateway number is ___. (If it says you are unassigned, please post in the Slack channel, which you can click in the top right, and say “I do not have a Secure Gateway number assigned”.</p>
+                    <p>Click on the Project dropdown to select the project where your Secure Gateway Client resides. Keep in mind that this will be different for various lab users depending on the group number you were assigned to in Step 1.4.3. In this example, the instructions lab user was assigned to group #1, so the project they chose was secure-gateway-client1. It is critical that you select the secure-gateway-client project that contains the group # you were assigned – otherwise, you will encounter errors. As a reminder, your Secure Gateway number is ___. (If it says you are unassigned, please send an email to gscgov@us.ibm.com, which you can click in the top right, along with the message, “I do not have a Secure Gateway number assigned”.</p>
 
                     <div class="step">Click on the Project dropdown and select the secure-gateway-client<span class="sg_numberHere">unassigned</span>.</div>
 
@@ -1011,7 +968,7 @@
 
                                 <p>Safari: <a href="http://safari.helpmax.net/en/privacy-and-security/turning-off-security-warnings/" target="_blank">http://safari.helpmax.net/en/privacy-and-security/turning-off-security-warnings/</a></p>
 
-                                <p>If you are still unable to get a response when you click the Cloud Host, use the Slack channel to post the message <b>"I am unable to get a response using my Cloud Host:Port in Step 1.5.3"</b>.</p>
+                                <p>If you are still unable to get a response when you click the Cloud Host, send an email to gscgov@us.ibm.com with the message, <b>"I am unable to get a response using my Cloud Host:Port in Step 1.5.3"</b>.</p>
                             </div>
 
                             <p>You may get a security warning – depending on your browser, there are ways to bypass this temporarily. You only want to test and see if you’re able to get back some details about the drone-controller.</p>
@@ -1049,7 +1006,7 @@
                         </h2>
                         <div class="sectionTitle">You completed Step 1! 🎉</div>
                         <p>
-                            You have successfully setup Secure Gateway to allow connectivity to the GSC Drones-To-Go controller application running in Cluster B within the simulated private cloud.  This exemplifies the process that was used to connect the Remote Drone Operations Console to the on-prem GSC Drones-To-Go resources.
+                            You have successfully setup Secure Gateway to allow connectivity to the IEL Drones-To-Go controller application running in Cluster B within the simulated private cloud.  This exemplifies the process that was used to connect the Remote Drone Operations Console to the on-prem IEL Drones-To-Go resources.
                         </p>
                         <div class="rect magentaRect single">
                             <div class="in">
@@ -1064,7 +1021,7 @@
                             </div>
                         </div>
                         <p>
-                            In the next steps, you will continue to get more access to the GSC Drone-To-Go service. In Step 2, this access includes getting to work with the service’s APIs and learning more about them.
+                            In the next steps, you will continue to get more access to the IEL Drone-To-Go service. In Step 2, this access includes getting to work with the service’s APIs and learning more about them.
                         </p>
                         <div class="timeline">
                             <table>
@@ -1738,7 +1695,7 @@
                     </h2>
                     <div class="sectionTitle">You completed Step 2! 🎉</div>
                     <p>
-                        You successfully used API Connect to expose APIs in the GSC Drones-To-Go service by creating a catalog, importing a YAML file with API definitions, made changes, republished, and tested out the API within the API Connect Explore tool.
+                        You successfully used API Connect to expose APIs in the IEL Drones-To-Go service by creating a catalog, importing a YAML file with API definitions, made changes, republished, and tested out the API within the API Connect Explore tool.
                     </p>
                     <div class="rect magentaRect single">
                         <div class="in">
@@ -2121,7 +2078,7 @@
 
                         <p>
                             The flow uses the following connectors and tools:<br>
-                            HTTP endpoint: To invoke the GET /status REST API call of API Connect (configured to the drone controller in GSC Private Cloud)<br>
+                            HTTP endpoint: To invoke the GET /status REST API call of API Connect (configured to the drone controller in IEL Private Cloud)<br>
                             HTTP endpoint: To invoke the Cloudant’s geospatial REST API call<br>
                             JSON Parsers: To parse the resultant HTTP response and map it to a defined object
                         </p>
@@ -2254,7 +2211,7 @@
                         ⚠️ My response doesn’t match the picture above / I got an error! <span class="readmore">[Click to Troubleshoot]</span>
                     </div>
                     <div class="answer">
-                        If you do NOT see a response similar to the one above, post a screenshot of your page in the Slack channel (link in the top right corner) along with the message, <b>"My App Connect response doesn’t match what is expected in Step 3.4.1."</b>
+                        If you do NOT see a response similar to the one above, email a screenshot to gscgov@us.ibm.com (link in the top right corner) along with the message, <b>"My App Connect response doesn’t match what is expected in Step 3.4.1."</b>
                     </div>
 
 
@@ -2352,12 +2309,12 @@
 
                     <p>
                         <b>Secure Gateway</b>
-                        A cloud service that enables you to establish a secure tunnel between the specific resources you want to connect. Used to enable access to GSC Drones-To-Go, a private cloud service.
+                        A cloud service that enables you to establish a secure tunnel between the specific resources you want to connect. Used to enable access to IEL Drones-To-Go, a private cloud service.
                     </p>
 
                     <p>
                         <b>API Connect</b>
-                        A modern, intuitive and scalable API platform that lets you create, securely expose, manage and monetize APIs across clouds. Used to create and add APIs that can request and respond with data that belongs of the GSC Drones-To-Go drones.
+                        A modern, intuitive and scalable API platform that lets you create, securely expose, manage and monetize APIs across clouds. Used to create and add APIs that can request and respond with data that belongs of the IEL Drones-To-Go drones.
                     </p>
 
                     <p>
@@ -2373,7 +2330,7 @@
                     <img class="standardImage" src="./img/flow_3.png">
 
                     <p>
-                        Your Remote Operations Console application is connected to the private cloud that hosts the fictional company GSC-Drones-To-Go service, which is hosted in the IBM Global Solution Center in Coppell, TX.
+                        Your Remote Operations Console application is connected to the private cloud that hosts the fictional company GSC-Drones-To-Go service, which is hosted in the IBM Industry Engineering Lab in Coppell, TX.
                     </p>
 
                     <p>
@@ -2386,7 +2343,7 @@
                     </div>
 
                     <p>
-                        If you want to recall specific information regarding the Remote Operations Console, it is recommended you read the instructions for Drone Lab 1, located here: <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>.
+                        If you want to recall specific information regarding the Remote Operations Console, it is recommended you read the instructions for Drone Lab 1, located here: <a href="https://ielgov.github.io/dronelab1" target="_blank">https://ielgov.github.io/dronelab1</a>.
                     </p>
 
                     <p>
@@ -2552,7 +2509,7 @@
                         ⚠️ The necessary nodes are not in the Topology view of my project! <span class="readmore">[Click to Troubleshoot]</span>
                     </div>
                     <div class="answer">
-                        If you do NOT see the two * nodes in your project, post a screenshot of your page in the Slack channel (link in the top right corner) along with the message, <b>“I do not see the necessary Drone Lab 2 nodes in Step 4.2.1.”</b>
+                        If you do NOT see the two * nodes in your project, send an email to gscgov@us.ibm.com (link in the top right corner) along with the message, <b>“I do not see the necessary Drone Lab 2 nodes in Step 4.2.1.”</b>
                     </div>
 
                     <img class="standardImage" src="./img/4_1_1_C.png">
@@ -2578,7 +2535,7 @@
                     </div>
 
                     <p>
-                        Notice the environment (env) variables in the Environment tab for this HTTP forward node. Just as you explored Secure Gateway (SG), API Connect (API), and App Connect (APP), there are values that have already been provided that are similar in syntax to the URLs you had produced in each previous step. Since the Remote Operations Console application has already been connected to the GSC Drones-To-Go service, these values were already taken care of for you.
+                        Notice the environment (env) variables in the Environment tab for this HTTP forward node. Just as you explored Secure Gateway (SG), API Connect (API), and App Connect (APP), there are values that have already been provided that are similar in syntax to the URLs you had produced in each previous step. Since the Remote Operations Console application has already been connected to the IEL Drones-To-Go service, these values were already taken care of for you.
                     </p>
 
                 </div>
@@ -2619,9 +2576,9 @@
 
 
                     <p>
-                        This website should be familiar from Drone Lab 1 - if you would like to review each section of the Remote Operations Console, please revisit Step 5 of the Drone Lab 1 instructions site <a href="https://pages.github.ibm.com/dallas-gsc-gov/dronelab" target="_blank">https://pages.github.ibm.com/dallas-gsc-gov/dronelab</a>.
+                        This website should be familiar from Drone Lab 1 - if you would like to review each section of the Remote Operations Console, please revisit Step 5 of the Drone Lab 1 instructions site <a href="https://ielgov.github.io/dronelab1" target="_blank">https://ielgov.github.io/dronelab1</a>.
 
-                        When you’re ready, go to the Available Drones section. Notice that the list of drones each have a status. The drones with the Available status can be connected to. These are the drones provided by the GSC Drones-To-Go service, and thanks to the services you explored earlier, this application is able to get access to these drones. Click on Connect on either of the drones to open its drone viewer modal.
+                        When you’re ready, go to the Available Drones section. Notice that the list of drones each have a status. The drones with the Available status can be connected to. These are the drones provided by the IEL Drones-To-Go service, and thanks to the services you explored earlier, this application is able to get access to these drones. Click on Connect on either of the drones to open its drone viewer modal.
                     </p>
 
                     <div class="step">
@@ -2691,7 +2648,7 @@
                     <div class="sectionTitle">4.3.2</div>
 
                     <p>
-                        In the Location section, turn on the Sensors in the map layers. You’ll notice that there a few sensors that are near the drone itself – click on one of them to view its information. If you recall in in Step 1, you enabled access to these drones in the GSC Drones-To-Go private cloud service with Secure Gateway and in Step 2, you were able to get the drone’s location coordinates through an API you had set up, and all of the sensors could be filtered to show nearby ones using the flow you added in Step 3. The connections to these services can be observed as you look at this section.
+                        In the Location section, turn on the Sensors in the map layers. You’ll notice that there a few sensors that are near the drone itself – click on one of them to view its information. If you recall in in Step 1, you enabled access to these drones in the IEL Drones-To-Go private cloud service with Secure Gateway and in Step 2, you were able to get the drone’s location coordinates through an API you had set up, and all of the sensors could be filtered to show nearby ones using the flow you added in Step 3. The connections to these services can be observed as you look at this section.
                     </p>
 
                     <div class="step">
@@ -2710,8 +2667,8 @@
 
 
                     <div class="finalStep">
-                        <span class="yel">Post a screenshot</span><br> of the drone viewer modal you liked more<br>
-                        in the Slack channel <a href="https://app.slack.com/client/T27C5S5GQ/C01ASHBKX7Y" target="_blank">#2020gsc_ibmcloudsandbox_dronelab2</a><br> (Link also in the top right of this page)</div><br><br>
+                        <span class="yel">Email a screenshot</span><br> of the drone viewer modal you liked more<br>
+                        of your custom remote drone console application to gscgov@us.ibm.com.</div><br><br>
 
                 </div>
 
@@ -2788,7 +2745,7 @@
 
     <!--- Begin Summary -->
     <div id="summary" class="main">
-        <h2>GSC Drone Lab 2: Summary</h2>
+        <h2>IEL Drone Lab 2: Summary</h2>
         <div class="timeline">
             <table>
                 <tbody>
@@ -2880,7 +2837,7 @@
         </div>
         <div class="mid">
             <hr />
-            Thank you for taking time to complete <b>GSC Drone Lab 2</b>. <span class="blue">Did you enjoy this lab?</span> Please leave a comment in this lab’s <span class="purple">Slack channel</span> (link in the top right) and let us know!<br><br> If you found this lab to be useful, remember that this Lab is the <b>second</b> a series of <b>Hands-on Labs</b>. Please look forward to more of these labs that will expand on the scenario and functionality that you completed today.<br><br>
+            Thank you for taking time to complete <b>IEL Drone Lab 2</b>.<br><br> If you found this lab to be useful, remember that this Lab is the <b>second</b> a series of <b>Hands-on Labs</b>. Please look forward to more of these labs that will expand on the scenario and functionality that you completed today.<br><br>
             <table class="futureLabs">
                 <tbody>
                     <tr class="header">
@@ -2916,10 +2873,7 @@
         </div>
 
         <div class="mid">
-            The GSC Drone Lab 2 was created by the <b>IBM Global Solution Center Public Market</b> team in Dallas, TX.<br>
-            Thank you to Romelia Flores, Catherine Chess and the SBaaS team, and Scott Knupp for their support on this lab.<br><br>
-            For more information on the <b>Global Solution Center</b>, what we do, and our pre-sales technical support for industry solutions, <br>
-            visit <a href="https://ibm.biz/gscdallas" target="_blank">https://ibm.biz/gscdallas</a>.<br> <br>
+            The IEL Drone Lab 2 was created by the <b>IBM Industry Engineering Lab PubFed</b> team in Coppell, TX.<br>
         </div>
     </div>
     </div>
